@@ -1,5 +1,6 @@
 import Enemies from '../components/enemies/Enemies';
 import Quiz from '../components/quiz/Quiz';
+import Friends from '../components/friends/Friends';
 
 const ENEMIES = [
   {
@@ -40,11 +41,23 @@ const QUIZZES = [
   },
 ];
 
+const FRIENDS = [
+  {
+    id: 1,
+    name: 'friends 1',
+  },
+  {
+    id: 2,
+    name: 'friends 2',
+  },
+];
+
 const Battle = () => {
   return (
     <div>
       <Enemies data={ENEMIES} />
       <Quiz data={QUIZZES} />
+      <Friends data={FRIENDS} />
     </div>
   );
 };
