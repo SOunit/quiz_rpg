@@ -65,23 +65,54 @@ const FRIENDS = [
 const MORAL_UP_NUM = 0.05;
 
 const Battle = () => {
+  const [isInitial, setIsInitial] = useState(true);
   const [morale, setMorale] = useState(1);
   const [friends, setFriends] = useState([]);
   const [enemies, setEnemies] = useState([]);
 
   useEffect(() => {
-    const friends = FRIENDS.map((friend) => {
-      friend.currentHp = friend.maxHp;
-      return friend;
-    });
-    setFriends(friends);
+    if (isInitial) {
+      console.log('initial');
+      setIsInitial(false);
+      const friends = FRIENDS.map((friend) => {
+        friend.currentHp = friend.maxHp;
+        return friend;
+      });
+      setFriends(friends);
 
-    const enemies = ENEMIES.map((enemy) => {
-      enemy.currentHp = enemy.maxHp;
+      const enemies = ENEMIES.map((enemy) => {
+        enemy.currentHp = enemy.maxHp;
+        enemy.currentCount = enemy.maxCount;
+        return enemy;
+      });
+      setEnemies(enemies);
+    }
+  }, [isInitial]);
+
+  const damageEnemyHandler = () => {
+    console.log('damageEnemyHandler');
+    const damagedEnemies = enemies.map((enemy) => {
+      enemy.currentHp -= 2;
       return enemy;
     });
-    setEnemies(enemies);
-  }, []);
+    console.log(damagedEnemies);
+
+    const newEnemies = damagedEnemies.filter((enemy) => enemy.currentHp > 0);
+    console.log(newEnemies);
+
+    setEnemies(newEnemies);
+  };
+
+  const minusEnemyCountHandler = () => {
+    console.log('minusEnemyCountHandler');
+    console.log(enemies);
+    const newEnemies = enemies.map((enemy) => {
+      enemy.currentCount--;
+      return enemy;
+    });
+
+    setEnemies(newEnemies);
+  };
 
   const moraleUpHandler = () => {
     setMorale((prevState) => parseFloat((prevState + MORAL_UP_NUM).toFixed(2)));
@@ -107,6 +138,8 @@ const Battle = () => {
         data={QUIZZES}
         onMoraleUp={moraleUpHandler}
         onMoraleDown={moraleDownHandler}
+        onMinusEnemyCount={minusEnemyCountHandler}
+        onDamageEnemy={damageEnemyHandler}
       />
       <Friends data={friends} />
     </div>

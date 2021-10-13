@@ -1,15 +1,28 @@
+import { useState } from 'react';
 import classes from './Quiz.module.css';
 
 const Quiz = (props) => {
-  const optionClickHandler = (event) => {
-    const id = event.target.id;
-    console.log(id);
+  const [count, setCount] = useState(0);
 
+  const optionClickHandler = (event) => {
+    setCount((prevState) => prevState + 1);
+
+    const id = event.target.id;
     const CORRECT_ANS_INDEX = '1';
-    if (id === CORRECT_ANS_INDEX) {
+
+    const isCorrect = id === CORRECT_ANS_INDEX;
+    if (isCorrect) {
       props.onMoraleUp();
     } else {
       props.onMoraleDown();
+    }
+
+    if (count >= 2) {
+      setCount(0);
+
+      props.onMinusEnemyCount();
+
+      isCorrect && props.onDamageEnemy();
     }
   };
 
