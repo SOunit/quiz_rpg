@@ -8,20 +8,23 @@ const ENEMIES = [
   {
     id: 1,
     name: 'enemy 1',
-    maxHp: 10,
+    maxHp: 100,
     maxCount: 3,
+    attack: 3,
   },
   {
     id: 2,
     name: 'enemy 2',
-    maxHp: 20,
+    maxHp: 200,
     maxCount: 5,
+    attack: 6,
   },
   {
     id: 3,
     name: 'enemy 3',
-    maxHp: 30,
+    maxHp: 30000,
     maxCount: 4,
+    attack: 9,
   },
 ];
 
@@ -53,12 +56,20 @@ const FRIENDS = [
   {
     id: 1,
     name: 'friends 1',
-    maxHp: 40,
+    maxHp: 400,
+    attack: 5,
   },
   {
     id: 2,
     name: 'friends 2',
-    maxHp: 30,
+    maxHp: 300,
+    attack: 10,
+  },
+  {
+    id: 3,
+    name: 'friends 3',
+    maxHp: 200,
+    attack: 40,
   },
 ];
 
@@ -87,7 +98,7 @@ const Battle = () => {
 
   const takeActionsHandler = () => {
     // process data
-    const damagedEnemies = damageEnemies();
+    const damagedEnemies = damageEnemies(enemies, friends);
     console.log('damagedEnemies', damagedEnemies);
 
     const minusCountedEnemies = minusEnemyCount(damagedEnemies);
@@ -114,7 +125,7 @@ const Battle = () => {
 
       console.log('damage friends!');
       const damagedFriends = friends.map((friend) => {
-        friend.currentHp -= 2;
+        friend.currentHp -= enemy.attack;
         return friend;
       });
 
@@ -127,15 +138,25 @@ const Battle = () => {
     return { newEnemies, newFriends };
   };
 
-  const damageEnemies = () => {
-    const damagedEnemies = enemies.map((enemy) => {
-      const damage = Math.ceil(2 * morale);
-      console.log('damage', damage);
-      enemy.currentHp -= damage;
-      return enemy;
+  const getRandomTargetIndex = (enemies) => {
+    const targetId = Math.floor(Math.random() * enemies.length);
+    return targetId;
+  };
+
+  const damageEnemies = (enemies, friends) => {
+    let newEnemies = enemies;
+
+    friends.forEach((friend) => {
+      console.log('friend.attack', friend.attack);
+
+      const targetId = getRandomTargetIndex(newEnemies);
+
+      const damage = Math.ceil(friend.attack * morale);
+      enemies[targetId].currentHp -= damage;
+
+      newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
     });
 
-    const newEnemies = damagedEnemies.filter((enemy) => enemy.currentHp > 0);
     return newEnemies;
   };
 
