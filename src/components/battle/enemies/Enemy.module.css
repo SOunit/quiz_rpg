@@ -1,0 +1,19 @@
+.enemy {
+  border: 3px solid red;
+  background-color: #ff8888;
+  color: red;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+.hp-bar {
+  width: 100%;
+  background-color: red;
+  height: 1rem;
+}

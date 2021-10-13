@@ -1,0 +1,16 @@
+.quiz {
+  text-align: center;
+  border: 1px solid blue;
+  padding: 1rem;
+}
+
+.quiz__text {
+  border: 1px solid blue;
+  font-size: 2rem;
+}
+
+.quiz__option {
+  border: 1px solid blue;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}

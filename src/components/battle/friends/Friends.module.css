@@ -1,0 +1,10 @@
+.friends {
+  border: 1px solid blue;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.hp-bar-wrapper {
+  margin: 0 0.5rem;
+}
