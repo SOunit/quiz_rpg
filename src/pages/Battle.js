@@ -1,6 +1,6 @@
-import Enemies from '../components/enemies/Enemies';
-import Quiz from '../components/quiz/Quiz';
-import Friends from '../components/friends/Friends';
+import Enemies from '../components/battle/enemies/Enemies';
+import Quiz from '../components/battle/quiz/Quiz';
+import Friends from '../components/battle/friends/Friends';
 
 const ENEMIES = [
   {

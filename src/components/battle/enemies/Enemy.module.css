@@ -10,3 +10,9 @@
   padding: 1rem;
   font-weight: bold;
 }
+
+.hp-bar {
+  width: 100%;
+  background-color: red;
+  height: 1rem;
+}

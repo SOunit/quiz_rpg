@@ -1,0 +1,7 @@
+.hp-bar {
+  width: 100%;
+  background-color: red;
+  margin: 0.5rem 0;
+  text-align: center;
+  color: #fff;
+}

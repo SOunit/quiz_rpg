@@ -4,3 +4,7 @@
   display: flex;
   justify-content: space-around;
 }
+
+.hp-bar-wrapper {
+  margin: 0 1rem;
+}
