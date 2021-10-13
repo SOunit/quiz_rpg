@@ -1,1 +1,5 @@
-
+.morale {
+  text-align: right;
+  padding: 0.5rem;
+  font-weight: bold;
+}

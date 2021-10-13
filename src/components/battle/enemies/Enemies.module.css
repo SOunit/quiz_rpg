@@ -4,3 +4,9 @@
   display: flex;
   justify-content: space-around;
 }
+
+.count {
+  text-align: center;
+  font-weight: bold;
+  padding: 0.3rem 0;
+}

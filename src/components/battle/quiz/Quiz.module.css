@@ -11,6 +11,6 @@
 
 .quiz__option {
   border: 1px solid blue;
-  margin: 1rem 0;
-  padding: 1rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
 }
