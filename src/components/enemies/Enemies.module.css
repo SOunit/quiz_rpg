@@ -1,0 +1,6 @@
+.enemies {
+  border: 1px solid blue;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
