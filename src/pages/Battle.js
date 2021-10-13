@@ -2,7 +2,7 @@ import Enemies from '../components/battle/enemies/Enemies';
 import Quiz from '../components/battle/quiz/Quiz';
 import Friends from '../components/battle/friends/Friends';
 import classes from './Battle.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ENEMIES = [
   {
@@ -66,6 +66,22 @@ const MORAL_UP_NUM = 0.05;
 
 const Battle = () => {
   const [morale, setMorale] = useState(1);
+  const [friends, setFriends] = useState([]);
+  const [enemies, setEnemies] = useState([]);
+
+  useEffect(() => {
+    const friends = FRIENDS.map((friend) => {
+      friend.currentHp = friend.maxHp;
+      return friend;
+    });
+    setFriends(friends);
+
+    const enemies = ENEMIES.map((enemy) => {
+      enemy.currentHp = enemy.maxHp;
+      return enemy;
+    });
+    setEnemies(enemies);
+  }, []);
 
   const moraleUpHandler = () => {
     setMorale((prevState) => parseFloat((prevState + MORAL_UP_NUM).toFixed(2)));
@@ -86,13 +102,13 @@ const Battle = () => {
   return (
     <div>
       <div className={classes['morale']}>{morale}</div>
-      <Enemies data={ENEMIES} />
+      <Enemies data={enemies} />
       <Quiz
         data={QUIZZES}
         onMoraleUp={moraleUpHandler}
         onMoraleDown={moraleDownHandler}
       />
-      <Friends data={FRIENDS} />
+      <Friends data={friends} />
     </div>
   );
 };
