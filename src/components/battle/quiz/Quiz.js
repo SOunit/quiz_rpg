@@ -1,8 +1,25 @@
 import classes from './Quiz.module.css';
 
 const Quiz = (props) => {
+  const optionClickHandler = (event) => {
+    const id = event.target.id;
+    console.log(id);
+
+    const CORRECT_ANS_INDEX = '1';
+    if (id === CORRECT_ANS_INDEX) {
+      props.onMoraleUp();
+    } else {
+      props.onMoraleDown();
+    }
+  };
+
   const options = props.data[0].options.map((option) => (
-    <div className={classes['quiz__option']} key={option.id}>
+    <div
+      id={option.id}
+      className={classes['quiz__option']}
+      key={option.id}
+      onClick={(e) => optionClickHandler(e)}
+    >
       {option.text}
     </div>
   ));
