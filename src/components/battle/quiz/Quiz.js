@@ -7,22 +7,24 @@ const Quiz = (props) => {
   const optionClickHandler = (event) => {
     setCount((prevState) => prevState + 1);
 
+    // answer check
     const id = event.target.id;
     const CORRECT_ANS_INDEX = '1';
-
     const isCorrect = id === CORRECT_ANS_INDEX;
+
+    // moral change
     if (isCorrect) {
       props.onMoraleUp();
     } else {
       props.onMoraleDown();
     }
 
+    // friends attack
+    // enemies attack
     if (count >= 2) {
       setCount(0);
 
-      props.onMinusEnemyCount();
-
-      isCorrect && props.onDamageEnemy();
+      props.onTakeActions();
     }
   };
 

@@ -65,45 +65,81 @@ const FRIENDS = [
 const MORAL_UP_NUM = 0.05;
 
 const Battle = () => {
-  const [isInitial, setIsInitial] = useState(true);
   const [morale, setMorale] = useState(1);
   const [friends, setFriends] = useState([]);
   const [enemies, setEnemies] = useState([]);
 
   useEffect(() => {
-    if (isInitial) {
-      console.log('initial');
-      setIsInitial(false);
-      const friends = FRIENDS.map((friend) => {
-        friend.currentHp = friend.maxHp;
-        return friend;
-      });
-      setFriends(friends);
+    console.log('initial');
+    const friends = FRIENDS.map((friend) => {
+      friend.currentHp = friend.maxHp;
+      return friend;
+    });
+    setFriends(friends);
 
-      const enemies = ENEMIES.map((enemy) => {
-        enemy.currentHp = enemy.maxHp;
-        enemy.currentCount = enemy.maxCount;
-        return enemy;
-      });
-      setEnemies(enemies);
-    }
-  }, [isInitial]);
-
-  const damageEnemyHandler = () => {
-    console.log('damageEnemyHandler');
-    const damagedEnemies = enemies.map((enemy) => {
-      enemy.currentHp -= 2;
+    const enemies = ENEMIES.map((enemy) => {
+      enemy.currentHp = enemy.maxHp;
+      enemy.currentCount = enemy.maxCount;
       return enemy;
     });
-    console.log(damagedEnemies);
+    setEnemies(enemies);
+  }, []);
 
-    const newEnemies = damagedEnemies.filter((enemy) => enemy.currentHp > 0);
+  const takeActionsHandler = () => {
+    // process data
+    const damagedEnemies = damageEnemies();
+    console.log('damagedEnemies', damagedEnemies);
+
+    const minusCountedEnemies = minusEnemyCount(damagedEnemies);
+
+    const { newEnemies, newFriends } = damageFriends(minusCountedEnemies);
     console.log(newEnemies);
+    console.log(newFriends);
 
+    // update screen
     setEnemies(newEnemies);
+    setFriends(newFriends);
   };
 
-  const minusEnemyCountHandler = () => {
+  const damageFriends = (enemies) => {
+    let newFriends = friends;
+
+    // each enemies take actions
+    const newEnemies = enemies.map((enemy) => {
+      console.log('enemy.currentCount', enemy.currentCount);
+      if (enemy.currentCount > 0) {
+        console.log('no action!');
+        return enemy;
+      }
+
+      console.log('damage friends!');
+      const damagedFriends = friends.map((friend) => {
+        friend.currentHp -= 2;
+        return friend;
+      });
+
+      newFriends = damagedFriends.filter((friend) => friend.currentHp > 0);
+
+      enemy.currentCount = enemy.maxCount;
+      return enemy;
+    });
+
+    return { newEnemies, newFriends };
+  };
+
+  const damageEnemies = () => {
+    const damagedEnemies = enemies.map((enemy) => {
+      const damage = Math.ceil(2 * morale);
+      console.log('damage', damage);
+      enemy.currentHp -= damage;
+      return enemy;
+    });
+
+    const newEnemies = damagedEnemies.filter((enemy) => enemy.currentHp > 0);
+    return newEnemies;
+  };
+
+  const minusEnemyCount = (enemies) => {
     console.log('minusEnemyCountHandler');
     console.log(enemies);
     const newEnemies = enemies.map((enemy) => {
@@ -111,7 +147,7 @@ const Battle = () => {
       return enemy;
     });
 
-    setEnemies(newEnemies);
+    return newEnemies;
   };
 
   const moraleUpHandler = () => {
@@ -136,10 +172,9 @@ const Battle = () => {
       <Enemies data={enemies} />
       <Quiz
         data={QUIZZES}
+        onTakeActions={takeActionsHandler}
         onMoraleUp={moraleUpHandler}
         onMoraleDown={moraleDownHandler}
-        onMinusEnemyCount={minusEnemyCountHandler}
-        onDamageEnemy={damageEnemyHandler}
       />
       <Friends data={friends} />
     </div>
