@@ -3,6 +3,7 @@ import Quiz from '../components/battle/quiz/Quiz';
 import Friends from '../components/battle/friends/Friends';
 import classes from './Battle.module.css';
 import { useEffect, useState } from 'react';
+import { getRandomTargetIndex } from '../util/util';
 
 const ENEMIES = [
   {
@@ -50,6 +51,48 @@ const QUIZZES = [
       },
     ],
   },
+  {
+    quiz: '15 + 5 = ?',
+    options: [
+      {
+        id: 1,
+        text: '20',
+      },
+      {
+        id: 3,
+        text: '10',
+      },
+      {
+        id: 2,
+        text: '15',
+      },
+      {
+        id: 4,
+        text: '25',
+      },
+    ],
+  },
+  {
+    quiz: '15 + 10 = ?',
+    options: [
+      {
+        id: 1,
+        text: '25',
+      },
+      {
+        id: 2,
+        text: '15',
+      },
+      {
+        id: 3,
+        text: '20',
+      },
+      {
+        id: 4,
+        text: '10',
+      },
+    ],
+  },
 ];
 
 const FRIENDS = [
@@ -81,7 +124,6 @@ const Battle = () => {
   const [enemies, setEnemies] = useState([]);
 
   useEffect(() => {
-    console.log('initial');
     const friends = FRIENDS.map((friend) => {
       friend.currentHp = friend.maxHp;
       return friend;
@@ -99,13 +141,8 @@ const Battle = () => {
   const takeActionsHandler = () => {
     // process data
     const damagedEnemies = damageEnemies(enemies, friends);
-    console.log('damagedEnemies', damagedEnemies);
-
     const minusCountedEnemies = minusEnemyCount(damagedEnemies);
-
     const { newEnemies, newFriends } = damageFriends(minusCountedEnemies);
-    console.log(newEnemies);
-    console.log(newFriends);
 
     // update screen
     setEnemies(newEnemies);
@@ -117,13 +154,10 @@ const Battle = () => {
 
     // each enemies take actions
     const newEnemies = enemies.map((enemy) => {
-      console.log('enemy.currentCount', enemy.currentCount);
       if (enemy.currentCount > 0) {
-        console.log('no action!');
         return enemy;
       }
 
-      console.log('damage friends!');
       const damagedFriends = friends.map((friend) => {
         friend.currentHp -= enemy.attack;
         return friend;
@@ -138,17 +172,10 @@ const Battle = () => {
     return { newEnemies, newFriends };
   };
 
-  const getRandomTargetIndex = (enemies) => {
-    const targetId = Math.floor(Math.random() * enemies.length);
-    return targetId;
-  };
-
   const damageEnemies = (enemies, friends) => {
     let newEnemies = enemies;
 
     friends.forEach((friend) => {
-      console.log('friend.attack', friend.attack);
-
       const targetId = getRandomTargetIndex(newEnemies);
 
       const damage = Math.ceil(friend.attack * morale);
@@ -161,8 +188,6 @@ const Battle = () => {
   };
 
   const minusEnemyCount = (enemies) => {
-    console.log('minusEnemyCountHandler');
-    console.log(enemies);
     const newEnemies = enemies.map((enemy) => {
       enemy.currentCount--;
       return enemy;

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getRandomTargetIndex } from '../../../util/util';
 import classes from './Quiz.module.css';
 
 const Quiz = (props) => {
@@ -28,7 +29,9 @@ const Quiz = (props) => {
     }
   };
 
-  const options = props.data[0].options.map((option) => (
+  const quizIndex = getRandomTargetIndex(props.data);
+
+  let options = props.data[quizIndex].options.map((option) => (
     <div
       id={option.id}
       className={classes['quiz__option']}
@@ -39,9 +42,19 @@ const Quiz = (props) => {
     </div>
   ));
 
+  const shuffle = ([...array]) => {
+    for (let i = array.length - 1; i >= 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  options = shuffle(options);
+
   return (
     <div className={classes['quiz']}>
-      <div className={classes['quiz__text']}>{props.data[0].quiz}</div>
+      <div className={classes['quiz__text']}>{props.data[quizIndex].quiz}</div>
       <div className={classes['quiz__options']}>{options}</div>
     </div>
   );
