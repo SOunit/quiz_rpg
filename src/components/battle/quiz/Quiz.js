@@ -4,7 +4,7 @@ import classes from './Quiz.module.css';
 
 // 2 for production
 // 0 for test
-const COUNT_TO_ACTION = 0;
+const COUNT_TO_ACTION = 2;
 
 const Quiz = (props) => {
   const [count, setCount] = useState(0);
@@ -61,6 +61,8 @@ const Quiz = (props) => {
   options = shuffle(options);
 
   const counts = [];
+
+  console.log('count', count);
 
   for (let i = 0; i < count; i++) {
     counts.push(<div key={i} className={classes['quiz__count']}></div>);
