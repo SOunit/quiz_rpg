@@ -15,6 +15,7 @@ const Friends = (props) => {
         <HpBar
           maxHp={props.data.maxTotalHp}
           currentHp={props.data.currentTotalHp}
+          showNum={true}
         />
       </div>
     </Fragment>
