@@ -1,7 +1,7 @@
 import Enemies from '../components/battle/enemies/Enemies';
 import Quiz from '../components/battle/quiz/Quiz';
 import Friends from '../components/battle/friends/Friends';
-import Congrats from '../components/battle/congrats/Congrats';
+import Result from '../components/battle/result/Result';
 import classes from './Battle.module.css';
 import { useEffect, useState } from 'react';
 import { getRandomTargetIndex } from '../util/util';
@@ -12,7 +12,7 @@ const ENEMIES = [
     name: 'enemy 1',
     maxHp: 10000,
     maxCount: 3,
-    attack: 30,
+    attack: 300,
   },
   // {
   //   id: 2,
@@ -142,6 +142,7 @@ const Battle = () => {
   const [friends, setFriends] = useState([]);
   const [enemies, setEnemies] = useState([]);
   const [isClear, setIsClear] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
   const [isQuizActive, setIsQuizActive] = useState(true);
 
   useEffect(() => {
@@ -175,6 +176,10 @@ const Battle = () => {
     if (newEnemies.length === 0) {
       setIsClear(true);
       setIsQuizActive(false);
+    } else if (newFriends.currentTotalHp <= 0) {
+      setIsGameOver(true);
+      setEnemies([]);
+      setIsQuizActive(false);
     }
 
     // update screen
@@ -204,13 +209,15 @@ const Battle = () => {
     let newEnemies = enemies;
 
     friends.forEach((friend) => {
-      const targetId = getRandomTargetIndex(newEnemies);
+      if (newEnemies.length > 0) {
+        const targetId = getRandomTargetIndex(newEnemies);
 
-      const damage = Math.ceil(friend.attack * morale);
+        const damage = Math.ceil(friend.attack * morale);
 
-      newEnemies[targetId].currentHp -= damage;
+        newEnemies[targetId].currentHp -= damage;
 
-      newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
+        newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
+      }
     });
 
     return newEnemies;
@@ -241,11 +248,14 @@ const Battle = () => {
     });
   };
 
+  console.log('enemies.length', enemies.length);
+
   return (
     <div>
       <div className={classes['morale']}>{morale}</div>
-      {enemies.length > 0 && <Enemies data={enemies} />}
-      {isClear && <Congrats />}
+      {!isGameOver && <Enemies data={enemies} />}
+      {isClear && <Result text='CLEAR!' />}
+      {isGameOver && <Result text='GAME OVER!' />}
       <Friends data={friends} />
       <Quiz
         data={QUIZZES}

@@ -1,4 +1,4 @@
-.congrats {
+.result {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   height: 25vh;
 }
 
-.congrats__text {
+.result__text {
   font-size: 3rem;
   font-weight: bold;
 }
