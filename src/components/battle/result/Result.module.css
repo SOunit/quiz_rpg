@@ -1,0 +1,12 @@
+.result {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid blue;
+  height: 25vh;
+}
+
+.result__text {
+  font-size: 3rem;
+  font-weight: bold;
+}

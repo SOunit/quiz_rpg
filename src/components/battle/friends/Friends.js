@@ -8,21 +8,15 @@ const Friends = (props) => {
     <Friend key={i} data={friend} />
   ));
 
-  const maxHp = props.data.reduce((sum, friend) => {
-    sum += friend.maxHp;
-    return sum;
-  }, 0);
-
-  const currentHp = props.data.reduce((sum, friend) => {
-    sum += friend.currentHp;
-    return sum;
-  }, 0);
-
   return (
     <Fragment>
       <div className={classes['friends']}>{friends}</div>
       <div className={classes['hp-bar-wrapper']}>
-        <HpBar maxHp={maxHp} currentHp={currentHp} />
+        <HpBar
+          maxHp={props.data.maxTotalHp}
+          currentHp={props.data.currentTotalHp}
+          showNum={true}
+        />
       </div>
     </Fragment>
   );

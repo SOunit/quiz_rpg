@@ -2,11 +2,29 @@
   border: 3px solid green;
   background-color: rgb(153, 255, 153);
   color: green;
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
   font-weight: bold;
+}
+
+.jump {
+  animation: jump 1s;
+}
+
+@keyframes jump {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
