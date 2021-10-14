@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { getRandomTargetIndex } from '../../../util/util';
 import classes from './Quiz.module.css';
 
+// 2 for production
+// 0 for test
+const COUNT_TO_ACTION = 0;
+
 const Quiz = (props) => {
   const [count, setCount] = useState(0);
 
@@ -26,7 +30,7 @@ const Quiz = (props) => {
 
     // friends attack
     // enemies attack
-    if (count >= 2) {
+    if (count >= COUNT_TO_ACTION) {
       setCount(0);
 
       props.onTakeActions();

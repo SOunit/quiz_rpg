@@ -149,6 +149,13 @@ const Battle = () => {
       friend.currentHp = friend.maxHp;
       return friend;
     });
+
+    friends.currentTotalHp = friends.reduce((hp, friend) => {
+      hp += friend.maxHp;
+      return hp;
+    }, 0);
+    friends.maxTotalHp = friends.currentTotalHp;
+
     setFriends(friends);
 
     const enemies = ENEMIES.map((enemy) => {
@@ -184,12 +191,7 @@ const Battle = () => {
         return enemy;
       }
 
-      const damagedFriends = friends.map((friend) => {
-        friend.currentHp -= enemy.attack;
-        return friend;
-      });
-
-      newFriends = damagedFriends.filter((friend) => friend.currentHp > 0);
+      newFriends.currentTotalHp -= enemy.attack;
 
       enemy.currentCount = enemy.maxCount;
       return enemy;
@@ -206,7 +208,7 @@ const Battle = () => {
 
       const damage = Math.ceil(friend.attack * morale);
 
-      enemies[targetId].currentHp -= damage;
+      newEnemies[targetId].currentHp -= damage;
 
       newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
     });
