@@ -24,7 +24,11 @@
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
 
-  color: white;
+  color: #2aff2a;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px black;
+  font-size: 0.8rem;
+
   margin: 0;
   width: 100%;
 }

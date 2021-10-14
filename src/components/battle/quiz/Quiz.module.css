@@ -4,6 +4,11 @@
   padding: 1rem;
 }
 
+.quiz--disabled {
+  opacity: 0.5;
+  background-color: grey;
+}
+
 .quiz__text {
   border: 1px solid blue;
   font-size: 2rem;
@@ -13,4 +18,18 @@
   border: 1px solid blue;
   margin: 0.5rem 0;
   padding: 0.5rem;
+}
+
+.quiz__counts {
+  display: flex;
+  min-height: 1rem;
+  /* border: 1px solid blue; */
+  margin-bottom: 1rem;
+}
+
+.quiz__count {
+  background-color: red;
+  height: 1rem;
+  width: 30%;
+  margin: 0 0.3rem;
 }

@@ -1,6 +1,7 @@
 import Enemies from '../components/battle/enemies/Enemies';
 import Quiz from '../components/battle/quiz/Quiz';
 import Friends from '../components/battle/friends/Friends';
+import Congrats from '../components/battle/congrats/Congrats';
 import classes from './Battle.module.css';
 import { useEffect, useState } from 'react';
 import { getRandomTargetIndex } from '../util/util';
@@ -9,24 +10,24 @@ const ENEMIES = [
   {
     id: 1,
     name: 'enemy 1',
-    maxHp: 100,
+    maxHp: 10000,
     maxCount: 3,
-    attack: 3,
+    attack: 30,
   },
-  {
-    id: 2,
-    name: 'enemy 2',
-    maxHp: 200,
-    maxCount: 5,
-    attack: 6,
-  },
-  {
-    id: 3,
-    name: 'enemy 3',
-    maxHp: 30000,
-    maxCount: 4,
-    attack: 9,
-  },
+  // {
+  //   id: 2,
+  //   name: 'enemy 2',
+  //   maxHp: 200,
+  //   maxCount: 5,
+  //   attack: 60,
+  // },
+  // {
+  //   id: 3,
+  //   name: 'enemy 3',
+  //   maxHp: 300,
+  //   maxCount: 4,
+  //   attack: 90,
+  // },
 ];
 
 const QUIZZES = [
@@ -114,6 +115,24 @@ const FRIENDS = [
     maxHp: 200,
     attack: 40,
   },
+  {
+    id: 4,
+    name: 'friends 4',
+    maxHp: 200,
+    attack: 40,
+  },
+  {
+    id: 5,
+    name: 'friends 5',
+    maxHp: 200,
+    attack: 40,
+  },
+  {
+    id: 6,
+    name: 'friends 6',
+    maxHp: 200,
+    attack: 40,
+  },
 ];
 
 const MORAL_UP_NUM = 0.05;
@@ -122,6 +141,8 @@ const Battle = () => {
   const [morale, setMorale] = useState(1);
   const [friends, setFriends] = useState([]);
   const [enemies, setEnemies] = useState([]);
+  const [isClear, setIsClear] = useState(false);
+  const [isQuizActive, setIsQuizActive] = useState(true);
 
   useEffect(() => {
     const friends = FRIENDS.map((friend) => {
@@ -143,6 +164,11 @@ const Battle = () => {
     const damagedEnemies = damageEnemies(enemies, friends);
     const minusCountedEnemies = minusEnemyCount(damagedEnemies);
     const { newEnemies, newFriends } = damageFriends(minusCountedEnemies);
+
+    if (newEnemies.length === 0) {
+      setIsClear(true);
+      setIsQuizActive(false);
+    }
 
     // update screen
     setEnemies(newEnemies);
@@ -179,6 +205,7 @@ const Battle = () => {
       const targetId = getRandomTargetIndex(newEnemies);
 
       const damage = Math.ceil(friend.attack * morale);
+
       enemies[targetId].currentHp -= damage;
 
       newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
@@ -215,14 +242,16 @@ const Battle = () => {
   return (
     <div>
       <div className={classes['morale']}>{morale}</div>
-      <Enemies data={enemies} />
+      {enemies.length > 0 && <Enemies data={enemies} />}
+      {isClear && <Congrats />}
+      <Friends data={friends} />
       <Quiz
         data={QUIZZES}
         onTakeActions={takeActionsHandler}
         onMoraleUp={moraleUpHandler}
         onMoraleDown={moraleDownHandler}
+        isActive={isQuizActive}
       />
-      <Friends data={friends} />
     </div>
   );
 };

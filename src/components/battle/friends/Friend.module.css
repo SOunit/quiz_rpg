@@ -10,3 +10,21 @@
   padding: 1rem;
   font-weight: bold;
 }
+
+.jump {
+  animation: jump 1s;
+}
+
+@keyframes jump {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

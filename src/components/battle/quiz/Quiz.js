@@ -6,6 +6,10 @@ const Quiz = (props) => {
   const [count, setCount] = useState(0);
 
   const optionClickHandler = (event) => {
+    if (!props.isActive) {
+      return;
+    }
+
     setCount((prevState) => prevState + 1);
 
     // answer check
@@ -52,8 +56,19 @@ const Quiz = (props) => {
 
   options = shuffle(options);
 
+  const counts = [];
+
+  for (let i = 0; i < count; i++) {
+    counts.push(<div key={i} className={classes['quiz__count']}></div>);
+  }
+
   return (
-    <div className={classes['quiz']}>
+    <div
+      className={`${classes['quiz']} ${
+        props.isActive ? '' : classes['quiz--disabled']
+      }`}
+    >
+      <div className={classes['quiz__counts']}>{counts}</div>
       <div className={classes['quiz__text']}>{props.data[quizIndex].quiz}</div>
       <div className={classes['quiz__options']}>{options}</div>
     </div>
