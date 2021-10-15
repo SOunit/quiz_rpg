@@ -85,6 +85,12 @@ const Battle = () => {
     }
   }, [isOnBattle, friends, currentFriendIndex]);
 
+  useEffect(() => {
+    if (isOnCheckFriends) {
+      console.log('isOnCheckFriends');
+    }
+  }, [isOnCheckFriends]);
+
   const takeActionsHandler = () => {
     // process data
     const damagedEnemies = damageEnemies(enemies, friends);
@@ -166,7 +172,9 @@ const Battle = () => {
     });
   };
 
-  const friendActionFinishHandler = () => {};
+  const friendJumpFinishHandler = () => {
+    setIsOnCheckFriends(true);
+  };
 
   return (
     <div>
@@ -174,7 +182,7 @@ const Battle = () => {
       {!isGameOver && <Enemies data={enemies} />}
       {isClear && <Result text='CLEAR!' />}
       {isGameOver && <Result text='GAME OVER!' />}
-      <Friends data={friends} onActionFinish={friendActionFinishHandler} />
+      <Friends data={friends} onJumpFinish={friendJumpFinishHandler} />
       <Quiz
         data={QUIZZES}
         onTakeActions={takeActionsHandler}

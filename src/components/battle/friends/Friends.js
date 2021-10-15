@@ -5,7 +5,7 @@ import { Fragment } from 'react';
 
 const Friends = (props) => {
   const friends = props.data.map((friend, i) => (
-    <Friend key={i} data={friend} />
+    <Friend key={i} data={friend} onJumpFinish={props.onJumpFinish} />
   ));
 
   return (

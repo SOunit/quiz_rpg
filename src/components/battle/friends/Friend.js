@@ -2,7 +2,13 @@ import { useEffect } from 'react';
 import classes from './Friend.module.css';
 
 const Friend = (props) => {
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (props.data.isJump) {
+      setTimeout(() => {
+        props.onJumpFinish();
+      }, 2000);
+    }
+  }, [props.data.isJump]);
 
   return (
     <div
