@@ -13,7 +13,7 @@ const Friend = (props) => {
         onJumpFinish();
       }, 2000);
     }
-  }, [isJump, onJumpFinish]);
+  }, [isJump, onJumpFinish, phase]);
 
   return (
     <div className={`${classes['friend']} ${isJump && classes['jump']}`}>

@@ -93,21 +93,24 @@ const Battle = () => {
     setFriends(newFriends);
   }, [friends]);
 
-  const damageEnemy = (enemies, friend) => {
-    let newEnemies = enemies;
+  const damageEnemy = useCallback(
+    (enemies, friend) => {
+      let newEnemies = enemies;
 
-    if (newEnemies.length > 0) {
-      const targetId = getRandomTargetIndex(newEnemies);
+      if (newEnemies.length > 0) {
+        const targetId = getRandomTargetIndex(newEnemies);
 
-      const damage = Math.ceil(friend.attack * morale);
+        const damage = Math.ceil(friend.attack * morale);
 
-      newEnemies[targetId].currentHp -= damage;
+        newEnemies[targetId].currentHp -= damage;
 
-      newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
-    }
+        newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
+      }
 
-    return newEnemies;
-  };
+      return newEnemies;
+    },
+    [morale]
+  );
 
   // PHASE_BATTLE_START
   useEffect(() => {
