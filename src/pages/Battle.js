@@ -91,13 +91,7 @@ const Battle = () => {
     }
   }, [isOnBattle, friends, friendIndexOnAttack]);
 
-  useEffect(() => {
-    if (isOnCheckFriends) {
-      console.log('isOnCheckFriends');
-    }
-  }, [isOnCheckFriends]);
-
-  const initBattle = () => {
+  const initBattle = useCallback(() => {
     setIsOnBattle(false);
     setIsOnDamageEnemy(false);
 
@@ -105,7 +99,25 @@ const Battle = () => {
       friend.isJump = false;
       return friend;
     });
+    addTotalHp(newFriends);
+
     setFriends(newFriends);
+  }, [friends]);
+
+  const damageEnemy = (enemies, friend) => {
+    let newEnemies = enemies;
+
+    if (newEnemies.length > 0) {
+      const targetId = getRandomTargetIndex(newEnemies);
+
+      const damage = Math.ceil(friend.attack * morale);
+
+      newEnemies[targetId].currentHp -= damage;
+
+      newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
+    }
+
+    return newEnemies;
   };
 
   useEffect(() => {
@@ -117,7 +129,14 @@ const Battle = () => {
       initBattle();
       setIsQuizActive(true);
     }
-  }, [isOnDamageEnemy]);
+  }, [
+    isOnDamageEnemy,
+    damageEnemy,
+    initBattle,
+    enemies,
+    friendIndexOnAttack,
+    friends,
+  ]);
 
   const takeActionsHandler = () => {
     // process data
@@ -153,22 +172,6 @@ const Battle = () => {
     });
 
     return { newEnemies, newFriends };
-  };
-
-  const damageEnemy = (enemies, friend) => {
-    let newEnemies = enemies;
-
-    if (newEnemies.length > 0) {
-      const targetId = getRandomTargetIndex(newEnemies);
-
-      const damage = Math.ceil(friend.attack * morale);
-
-      newEnemies[targetId].currentHp -= damage;
-
-      newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
-    }
-
-    return newEnemies;
   };
 
   const minusEnemyCount = (enemies) => {
