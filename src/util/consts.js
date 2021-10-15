@@ -1,3 +1,8 @@
 export const PUBLIC_FIREBASE_PROJECT_ID = 'quiz-rpg';
 export const PUBLIC_FIREBASE_API_KEY =
   'AIzaSyDEYkULvzs1Di5urPS9CoVPkdUkNABpdLY';
+
+export const PHASE_QUIZ = 'PHASE_QUIZ';
+export const PHASE_BATTLE_START = 'PHASE_BATTLE_START';
+export const PHASE_WAIT_JUMP = 'PHASE_WAIT_JUMP';
+export const PHASE_DAMAGE_ENEMY = 'PHASE_DAMAGE_ENEMY';
