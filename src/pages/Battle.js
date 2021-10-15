@@ -23,11 +23,6 @@ const Battle = () => {
   const [isOnCheckFriends, setIsOnCheckFriends] = useState(false);
   const [isOnDamageEnemy, setIsOnDamageEnemy] = useState(false);
 
-  console.log('---------------------------');
-  console.log('isOnBattle', isOnBattle);
-  console.log('isOnCheckFriends', isOnCheckFriends);
-  console.log('isOnDamageEnemy', isOnDamageEnemy);
-
   // result
   const [isClear, setIsClear] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
@@ -85,7 +80,6 @@ const Battle = () => {
       setIsQuizActive(false);
     }
 
-    console.log(friends);
     if (friends[friendIndexOnAttack]) {
       friends[friendIndexOnAttack].isJump = true;
     }
@@ -122,7 +116,7 @@ const Battle = () => {
 
   useEffect(() => {
     if (isOnDamageEnemy) {
-      console.log('isOnDamageEnemy');
+      console.log('on damage enemy');
       const newEnemies = damageEnemy(enemies, friends[friendIndexOnAttack]);
       setEnemies(newEnemies);
 

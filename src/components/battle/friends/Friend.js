@@ -5,6 +5,7 @@ const Friend = (props) => {
   useEffect(() => {
     if (props.data.isJump) {
       setTimeout(() => {
+        console.log('friend jump finish');
         props.onJumpFinish();
       }, 2000);
     }
