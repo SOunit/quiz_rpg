@@ -11,18 +11,22 @@ import { FRIENDS, ENEMIES, QUIZZES } from '../util/data';
 const MORAL_UP_NUM = 0.05;
 
 const Battle = () => {
+  // battle data
   const [morale, setMorale] = useState(1);
   const [friends, setFriends] = useState([]);
   const [enemies, setEnemies] = useState([]);
 
-  // flow
-  // - check action
-  // - friend jump
-  // - friend attack
-  // - damage enemy
+  // phases
   const [isOnBattle, setIsOnBattle] = useState(false);
   const [currentFriendIndex, setCurrentFriendIndex] = useState(0);
+  // FIXME: this is the first step before jump
   const [isOnCheckFriends, setIsOnCheckFriends] = useState(false);
+  const [isOnDamageEnemy, setIsOnDamageEnemy] = useState(false);
+
+  console.log('---------------------------');
+  console.log('isOnBattle', isOnBattle);
+  console.log('isOnCheckFriends', isOnCheckFriends);
+  console.log('isOnDamageEnemy', isOnDamageEnemy);
 
   // result
   const [isClear, setIsClear] = useState(false);
@@ -91,24 +95,43 @@ const Battle = () => {
     }
   }, [isOnCheckFriends]);
 
+  const initBattle = () => {
+    setIsOnBattle(false);
+    setIsOnDamageEnemy(false);
+
+    const newFriends = friends.map((friend) => {
+      friend.isJump = false;
+      return friend;
+    });
+    setFriends(newFriends);
+  };
+
+  useEffect(() => {
+    if (isOnDamageEnemy) {
+      console.log('isOnDamageEnemy');
+      const newEnemies = damageEnemies(enemies, friends);
+      setEnemies(newEnemies);
+
+      initBattle();
+    }
+  }, [isOnDamageEnemy]);
+
   const takeActionsHandler = () => {
     // process data
-    const damagedEnemies = damageEnemies(enemies, friends);
-    const minusCountedEnemies = minusEnemyCount(damagedEnemies);
-    const { newEnemies, newFriends } = damageFriends(minusCountedEnemies);
-
-    if (newEnemies.length === 0) {
-      setIsClear(true);
-      setIsQuizActive(false);
-    } else if (newFriends.currentTotalHp <= 0) {
-      setIsGameOver(true);
-      setEnemies([]);
-      setIsQuizActive(false);
-    }
-
+    // const damagedEnemies = damageEnemies(enemies, friends);
+    // const minusCountedEnemies = minusEnemyCount(damagedEnemies);
+    // const { newEnemies, newFriends } = damageFriends(minusCountedEnemies);
+    // if (newEnemies.length === 0) {
+    //   setIsClear(true);
+    //   setIsQuizActive(false);
+    // } else if (newFriends.currentTotalHp <= 0) {
+    //   setIsGameOver(true);
+    //   setEnemies([]);
+    //   setIsQuizActive(false);
+    // }
     // update screen
-    setEnemies(newEnemies);
-    setFriends(newFriends);
+    // setEnemies(newEnemies);
+    // setFriends(newFriends);
   };
 
   const damageFriends = (enemies) => {
@@ -173,6 +196,7 @@ const Battle = () => {
   };
 
   const friendJumpFinishHandler = () => {
+    setIsOnDamageEnemy(true);
     setIsOnCheckFriends(true);
   };
 
