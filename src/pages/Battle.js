@@ -9,6 +9,7 @@ import { getRandomTargetIndex } from '../util/util';
 import { FRIENDS, ENEMIES, QUIZZES } from '../util/data';
 import {
   PHASE_BATTLE_START,
+  PHASE_CHECK_NEXT_FRIEND,
   PHASE_DAMAGE_ENEMY,
   PHASE_QUIZ,
   PHASE_WAIT_JUMP,
@@ -21,11 +22,9 @@ const Battle = () => {
   const [morale, setMorale] = useState(1);
   const [friends, setFriends] = useState([]);
   const [enemies, setEnemies] = useState([]);
-
-  // phases
-  const [isOnBattle, setIsOnBattle] = useState(false);
   const [friendIndexOnAttack, setFriendIndexOnAttack] = useState(0);
-  const [isOnDamageEnemy, setIsOnDamageEnemy] = useState(false);
+
+  // phase
   const [phase, setPhase] = useState(PHASE_QUIZ);
 
   // result
@@ -66,23 +65,9 @@ const Battle = () => {
     setPhase(PHASE_BATTLE_START);
   };
 
-  // initialize data
-  useEffect(() => {
-    const friends = initFriends(FRIENDS);
-    setFriends(friends);
-
-    const enemies = initEnemies(ENEMIES);
-    setEnemies(enemies);
-
-    // firebase insert test
-    // const todoRef = firebase.database().ref('Todo');
-    // const todo = { title: 'test title', complete: false };
-    // todoRef.push(todo);
-  }, [initFriends]);
-
-  const initBattle = useCallback(() => {
-    setIsOnBattle(false);
-    setIsOnDamageEnemy(false);
+  const endBattlePhase = useCallback(() => {
+    setFriendIndexOnAttack(0);
+    setPhase(PHASE_QUIZ);
 
     const newFriends = friends.map((friend) => {
       friend.isJump = false;
@@ -112,18 +97,39 @@ const Battle = () => {
     [morale]
   );
 
+  // initialize data
+  useEffect(() => {
+    const friends = initFriends(FRIENDS);
+    setFriends(friends);
+
+    const enemies = initEnemies(ENEMIES);
+    setEnemies(enemies);
+
+    // firebase insert test
+    // const todoRef = firebase.database().ref('Todo');
+    // const todo = { title: 'test title', complete: false };
+    // todoRef.push(todo);
+  }, [initFriends]);
+
   // PHASE_BATTLE_START
   useEffect(() => {
     if (phase === PHASE_BATTLE_START) {
       console.log('phase', phase);
       setIsQuizActive(false);
       setPhase(PHASE_WAIT_JUMP);
-    }
 
-    if (friends[friendIndexOnAttack]) {
-      friends[friendIndexOnAttack].isJump = true;
+      if (friends[friendIndexOnAttack]) {
+        friends[friendIndexOnAttack].isJump = true;
+      }
     }
   }, [phase, friends, friendIndexOnAttack]);
+
+  // PHASE_WAIT_JUMP
+  useEffect(() => {
+    if (phase === PHASE_WAIT_JUMP) {
+      console.log('phase', phase);
+    }
+  }, [phase]);
 
   // PHASE_DAMAGE_ENEMY
   useEffect(() => {
@@ -132,11 +138,38 @@ const Battle = () => {
       const newEnemies = damageEnemy(enemies, friends[friendIndexOnAttack]);
       setEnemies(newEnemies);
 
-      setPhase('test');
-      initBattle();
+      setPhase(PHASE_CHECK_NEXT_FRIEND);
+    }
+  }, [
+    phase,
+    damageEnemy,
+    endBattlePhase,
+    enemies,
+    friendIndexOnAttack,
+    friends,
+  ]);
+
+  // PHASE_CHECK_NEXT_FRIEND
+  useEffect(() => {
+    if (phase === PHASE_CHECK_NEXT_FRIEND) {
+      console.log('phase', phase);
+      const nextIndex = friendIndexOnAttack + 1;
+      if (friends[nextIndex]) {
+        setFriendIndexOnAttack(nextIndex);
+        setPhase(PHASE_BATTLE_START);
+      } else {
+        endBattlePhase();
+      }
+    }
+  }, [phase]);
+
+  // PHASE_QUIZ
+  useEffect(() => {
+    if (phase === PHASE_QUIZ) {
+      console.log('phase', phase);
       setIsQuizActive(true);
     }
-  }, [phase, damageEnemy, initBattle, enemies, friendIndexOnAttack, friends]);
+  }, [phase]);
 
   const takeActionsHandler = () => {
     // process data
