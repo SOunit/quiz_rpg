@@ -5,6 +5,7 @@ import Result from '../components/battle/result/Result';
 import classes from './Battle.module.css';
 import { useEffect, useState } from 'react';
 import { getRandomTargetIndex } from '../util/util';
+import { firebase } from '../firebase/initFirebase';
 
 const ENEMIES = [
   {
@@ -14,13 +15,13 @@ const ENEMIES = [
     maxCount: 3,
     attack: 300,
   },
-  // {
-  //   id: 2,
-  //   name: 'enemy 2',
-  //   maxHp: 200,
-  //   maxCount: 5,
-  //   attack: 60,
-  // },
+  {
+    id: 2,
+    name: 'enemy 2',
+    maxHp: 200,
+    maxCount: 5,
+    attack: 60,
+  },
   // {
   //   id: 3,
   //   name: 'enemy 3',
@@ -115,24 +116,24 @@ const FRIENDS = [
     maxHp: 200,
     attack: 40,
   },
-  {
-    id: 4,
-    name: 'friends 4',
-    maxHp: 200,
-    attack: 40,
-  },
-  {
-    id: 5,
-    name: 'friends 5',
-    maxHp: 200,
-    attack: 40,
-  },
-  {
-    id: 6,
-    name: 'friends 6',
-    maxHp: 200,
-    attack: 40,
-  },
+  // {
+  //   id: 4,
+  //   name: 'friends 4',
+  //   maxHp: 200,
+  //   attack: 40,
+  // },
+  // {
+  //   id: 5,
+  //   name: 'friends 5',
+  //   maxHp: 200,
+  //   attack: 40,
+  // },
+  // {
+  //   id: 6,
+  //   name: 'friends 6',
+  //   maxHp: 200,
+  //   attack: 40,
+  // },
 ];
 
 const MORAL_UP_NUM = 0.05;
@@ -165,6 +166,11 @@ const Battle = () => {
       return enemy;
     });
     setEnemies(enemies);
+
+    // firebase insert test
+    // const todoRef = firebase.database().ref('Todo');
+    // const todo = { title: 'test title', complete: false };
+    // todoRef.push(todo);
   }, []);
 
   const takeActionsHandler = () => {
