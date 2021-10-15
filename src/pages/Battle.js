@@ -173,17 +173,21 @@ const Battle = () => {
     return newFriends;
   }, []);
 
-  useEffect(() => {
-    const friends = initFriends(FRIENDS);
-    console.log(friends);
-
-    setFriends(friends);
-
-    const enemies = ENEMIES.map((enemy) => {
+  const initEnemies = (enemies) => {
+    const newEnemies = enemies.map((enemy) => {
       enemy.currentHp = enemy.maxHp;
       enemy.currentCount = enemy.maxCount;
       return enemy;
     });
+
+    return newEnemies;
+  };
+
+  useEffect(() => {
+    const friends = initFriends(FRIENDS);
+    setFriends(friends);
+
+    const enemies = initEnemies(ENEMIES);
     setEnemies(enemies);
 
     // firebase insert test
