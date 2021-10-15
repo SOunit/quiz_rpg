@@ -3,22 +3,22 @@ import Quiz from '../components/battle/quiz/Quiz';
 import Friends from '../components/battle/friends/Friends';
 import Result from '../components/battle/result/Result';
 import classes from './Battle.module.css';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getRandomTargetIndex } from '../util/util';
-import { firebase } from '../firebase/initFirebase';
+// import { firebase } from '../firebase/initFirebase';
 
 const ENEMIES = [
   {
     id: 1,
     name: 'enemy 1',
-    maxHp: 10000,
+    maxHp: 1000,
     maxCount: 3,
-    attack: 300,
+    attack: 30,
   },
   {
     id: 2,
     name: 'enemy 2',
-    maxHp: 200,
+    maxHp: 2000,
     maxCount: 5,
     attack: 60,
   },
@@ -142,21 +142,40 @@ const Battle = () => {
   const [morale, setMorale] = useState(1);
   const [friends, setFriends] = useState([]);
   const [enemies, setEnemies] = useState([]);
+
+  // flow
+  // - check action
+  // - friend jump
+  // - friend attack
+  // - damage enemy
+
+  // result
   const [isClear, setIsClear] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isQuizActive, setIsQuizActive] = useState(true);
 
-  useEffect(() => {
-    const friends = FRIENDS.map((friend) => {
-      friend.currentHp = friend.maxHp;
-      return friend;
-    });
-
+  const addTotalHp = (friends) => {
     friends.currentTotalHp = friends.reduce((hp, friend) => {
       hp += friend.maxHp;
       return hp;
     }, 0);
     friends.maxTotalHp = friends.currentTotalHp;
+  };
+
+  const initFriends = useCallback((friends) => {
+    const newFriends = friends.map((friend) => {
+      friend.currentHp = friend.maxHp;
+      return friend;
+    });
+
+    addTotalHp(newFriends);
+
+    return newFriends;
+  }, []);
+
+  useEffect(() => {
+    const friends = initFriends(FRIENDS);
+    console.log(friends);
 
     setFriends(friends);
 
@@ -171,7 +190,7 @@ const Battle = () => {
     // const todoRef = firebase.database().ref('Todo');
     // const todo = { title: 'test title', complete: false };
     // todoRef.push(todo);
-  }, []);
+  }, [initFriends]);
 
   const takeActionsHandler = () => {
     // process data
