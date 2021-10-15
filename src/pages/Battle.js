@@ -18,7 +18,7 @@ const Battle = () => {
 
   // phases
   const [isOnBattle, setIsOnBattle] = useState(false);
-  const [currentFriendIndex, setCurrentFriendIndex] = useState(0);
+  const [friendIndexOnAttack, setFriendIndexOnAttack] = useState(0);
   // FIXME: this is the first step before jump
   const [isOnCheckFriends, setIsOnCheckFriends] = useState(false);
   const [isOnDamageEnemy, setIsOnDamageEnemy] = useState(false);
@@ -86,10 +86,10 @@ const Battle = () => {
     }
 
     console.log(friends);
-    if (friends[currentFriendIndex]) {
-      friends[currentFriendIndex].isJump = true;
+    if (friends[friendIndexOnAttack]) {
+      friends[friendIndexOnAttack].isJump = true;
     }
-  }, [isOnBattle, friends, currentFriendIndex]);
+  }, [isOnBattle, friends, friendIndexOnAttack]);
 
   useEffect(() => {
     if (isOnCheckFriends) {
@@ -111,18 +111,17 @@ const Battle = () => {
   useEffect(() => {
     if (isOnDamageEnemy) {
       console.log('isOnDamageEnemy');
-      const newEnemies = damageEnemies(enemies, friends);
+      const newEnemies = damageEnemy(enemies, friends[friendIndexOnAttack]);
       setEnemies(newEnemies);
 
       initBattle();
-
       setIsQuizActive(true);
     }
   }, [isOnDamageEnemy]);
 
   const takeActionsHandler = () => {
     // process data
-    // const damagedEnemies = damageEnemies(enemies, friends);
+    // const damagedEnemies = damageEnemy(enemies, friends);
     // const minusCountedEnemies = minusEnemyCount(damagedEnemies);
     // const { newEnemies, newFriends } = damageFriends(minusCountedEnemies);
     // if (newEnemies.length === 0) {
@@ -156,20 +155,18 @@ const Battle = () => {
     return { newEnemies, newFriends };
   };
 
-  const damageEnemies = (enemies, friends) => {
+  const damageEnemy = (enemies, friend) => {
     let newEnemies = enemies;
 
-    friends.forEach((friend) => {
-      if (newEnemies.length > 0) {
-        const targetId = getRandomTargetIndex(newEnemies);
+    if (newEnemies.length > 0) {
+      const targetId = getRandomTargetIndex(newEnemies);
 
-        const damage = Math.ceil(friend.attack * morale);
+      const damage = Math.ceil(friend.attack * morale);
 
-        newEnemies[targetId].currentHp -= damage;
+      newEnemies[targetId].currentHp -= damage;
 
-        newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
-      }
-    });
+      newEnemies = enemies.filter((enemy) => enemy.currentHp > 0);
+    }
 
     return newEnemies;
   };
