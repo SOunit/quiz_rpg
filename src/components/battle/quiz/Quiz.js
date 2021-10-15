@@ -33,6 +33,7 @@ const Quiz = (props) => {
     if (count >= COUNT_TO_ACTION) {
       setCount(0);
 
+      props.onStartBattle();
       props.onTakeActions();
     }
   };
@@ -61,8 +62,6 @@ const Quiz = (props) => {
   options = shuffle(options);
 
   const counts = [];
-
-  console.log('count', count);
 
   for (let i = 0; i < count; i++) {
     counts.push(<div key={i} className={classes['quiz__count']}></div>);

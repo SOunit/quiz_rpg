@@ -6,135 +6,7 @@ import classes from './Battle.module.css';
 import { useCallback, useEffect, useState } from 'react';
 import { getRandomTargetIndex } from '../util/util';
 // import { firebase } from '../firebase/initFirebase';
-
-const ENEMIES = [
-  {
-    id: 1,
-    name: 'enemy 1',
-    maxHp: 1000,
-    maxCount: 3,
-    attack: 30,
-  },
-  {
-    id: 2,
-    name: 'enemy 2',
-    maxHp: 2000,
-    maxCount: 5,
-    attack: 60,
-  },
-  // {
-  //   id: 3,
-  //   name: 'enemy 3',
-  //   maxHp: 300,
-  //   maxCount: 4,
-  //   attack: 90,
-  // },
-];
-
-const QUIZZES = [
-  {
-    quiz: '5 + 5 = ?',
-    options: [
-      {
-        id: 1,
-        text: '10',
-      },
-      {
-        id: 2,
-        text: '15',
-      },
-      {
-        id: 3,
-        text: '20',
-      },
-      {
-        id: 4,
-        text: '25',
-      },
-    ],
-  },
-  {
-    quiz: '15 + 5 = ?',
-    options: [
-      {
-        id: 1,
-        text: '20',
-      },
-      {
-        id: 3,
-        text: '10',
-      },
-      {
-        id: 2,
-        text: '15',
-      },
-      {
-        id: 4,
-        text: '25',
-      },
-    ],
-  },
-  {
-    quiz: '15 + 10 = ?',
-    options: [
-      {
-        id: 1,
-        text: '25',
-      },
-      {
-        id: 2,
-        text: '15',
-      },
-      {
-        id: 3,
-        text: '20',
-      },
-      {
-        id: 4,
-        text: '10',
-      },
-    ],
-  },
-];
-
-const FRIENDS = [
-  {
-    id: 1,
-    name: 'friends 1',
-    maxHp: 400,
-    attack: 5,
-  },
-  {
-    id: 2,
-    name: 'friends 2',
-    maxHp: 300,
-    attack: 10,
-  },
-  {
-    id: 3,
-    name: 'friends 3',
-    maxHp: 200,
-    attack: 40,
-  },
-  // {
-  //   id: 4,
-  //   name: 'friends 4',
-  //   maxHp: 200,
-  //   attack: 40,
-  // },
-  // {
-  //   id: 5,
-  //   name: 'friends 5',
-  //   maxHp: 200,
-  //   attack: 40,
-  // },
-  // {
-  //   id: 6,
-  //   name: 'friends 6',
-  //   maxHp: 200,
-  //   attack: 40,
-  // },
-];
+import { FRIENDS, ENEMIES, QUIZZES } from '../util/data';
 
 const MORAL_UP_NUM = 0.05;
 
@@ -148,6 +20,9 @@ const Battle = () => {
   // - friend jump
   // - friend attack
   // - damage enemy
+  const [isOnBattle, setIsOnBattle] = useState(false);
+  const [currentFriendIndex, setCurrentFriendIndex] = useState(0);
+  const [isOnCheckFriends, setIsOnCheckFriends] = useState(false);
 
   // result
   const [isClear, setIsClear] = useState(false);
@@ -183,6 +58,10 @@ const Battle = () => {
     return newEnemies;
   };
 
+  const startBattleHandler = () => {
+    setIsOnBattle(true);
+  };
+
   useEffect(() => {
     const friends = initFriends(FRIENDS);
     setFriends(friends);
@@ -195,6 +74,16 @@ const Battle = () => {
     // const todo = { title: 'test title', complete: false };
     // todoRef.push(todo);
   }, [initFriends]);
+
+  useEffect(() => {
+    isOnBattle && console.log('on battle');
+
+    console.log(friends);
+
+    if (friends[currentFriendIndex]) {
+      friends[currentFriendIndex].isJump = true;
+    }
+  }, [isOnBattle, friends, currentFriendIndex]);
 
   const takeActionsHandler = () => {
     // process data
@@ -277,7 +166,7 @@ const Battle = () => {
     });
   };
 
-  console.log('enemies.length', enemies.length);
+  const friendActionFinishHandler = () => {};
 
   return (
     <div>
@@ -285,13 +174,14 @@ const Battle = () => {
       {!isGameOver && <Enemies data={enemies} />}
       {isClear && <Result text='CLEAR!' />}
       {isGameOver && <Result text='GAME OVER!' />}
-      <Friends data={friends} />
+      <Friends data={friends} onActionFinish={friendActionFinishHandler} />
       <Quiz
         data={QUIZZES}
         onTakeActions={takeActionsHandler}
         onMoraleUp={moraleUpHandler}
         onMoraleDown={moraleDownHandler}
         isActive={isQuizActive}
+        onStartBattle={startBattleHandler}
       />
     </div>
   );
