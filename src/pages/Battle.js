@@ -80,10 +80,12 @@ const Battle = () => {
   }, [initFriends]);
 
   useEffect(() => {
-    isOnBattle && console.log('on battle');
+    if (isOnBattle) {
+      console.log('on battle');
+      setIsQuizActive(false);
+    }
 
     console.log(friends);
-
     if (friends[currentFriendIndex]) {
       friends[currentFriendIndex].isJump = true;
     }
@@ -113,6 +115,8 @@ const Battle = () => {
       setEnemies(newEnemies);
 
       initBattle();
+
+      setIsQuizActive(true);
     }
   }, [isOnDamageEnemy]);
 
