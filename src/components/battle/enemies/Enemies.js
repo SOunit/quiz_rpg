@@ -8,11 +8,11 @@ const Enemies = (props) => {
       <div key={`${enemy.id}_${i}`}>
         <div className={classes['count']}>{enemy.currentCount}</div>
         <Enemy
-          data={enemy}
+          enemy={enemy}
           phase={props.phase}
           onJumpFinish={props.onJumpFinish}
         />
-        <HpBar currentHp={enemy.currentHp} maxHp={enemy.maxHp} />
+        <HpBar currentHp={enemy.currentHp} maxHp={enemy.maxHp} showNum />
       </div>
     );
   });
