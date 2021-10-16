@@ -92,7 +92,7 @@ export const FRIENDS = [
   {
     id: 1,
     name: 'friends 1',
-    maxHp: 4000,
+    maxHp: 800,
     attack: 100,
   },
   // {

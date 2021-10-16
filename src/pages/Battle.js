@@ -36,10 +36,9 @@ const Battle = () => {
   const [phase, setPhase] = useState(PHASE_QUIZ);
 
   // result
-  const [isGameOver, setIsGameOver] = useState(false);
   const [isQuizActive, setIsQuizActive] = useState(true);
 
-  const addTotalHp = (friends) => {
+  const initTotalHp = (friends) => {
     friends.currentTotalHp = friends.reduce((hp, friend) => {
       hp += friend.maxHp;
       return hp;
@@ -53,7 +52,7 @@ const Battle = () => {
       return friend;
     });
 
-    addTotalHp(newFriends);
+    initTotalHp(newFriends);
 
     return newFriends;
   }, []);
@@ -80,10 +79,20 @@ const Battle = () => {
       friend.isJump = false;
       return friend;
     });
-    addTotalHp(newFriends);
+    newFriends.currentTotalHp = friends.currentTotalHp;
+    newFriends.maxTotalHp = friends.maxTotalHp;
 
     setFriends(newFriends);
-  }, [friends]);
+
+    const newEnemies = enemies.map((enemy) => {
+      enemy.isJump = false;
+      return enemy;
+    });
+    newEnemies.currentTotalHp = enemies.currentTotalHp;
+    newEnemies.maxTotalHp = enemies.maxTotalHp;
+
+    setEnemies(newEnemies);
+  }, [friends, enemies]);
 
   const damageEnemy = useCallback(
     (enemies, friend) => {
@@ -133,6 +142,9 @@ const Battle = () => {
         }
 
         newFriends.currentTotalHp -= enemy.attack;
+        if (newFriends.currentTotalHp <= 0) {
+          newFriends.currentTotalHp = 0;
+        }
 
         enemy.currentCount = enemy.maxCount;
         return enemy;
@@ -223,14 +235,7 @@ const Battle = () => {
         setPhase(PHASE_CHECK_NEXT_FRIEND);
       }
     }
-  }, [
-    phase,
-    damageEnemy,
-    endBattlePhase,
-    enemies,
-    friendIndexOnAttack,
-    friends,
-  ]);
+  }, [phase, damageEnemy, enemies, friendIndexOnAttack, friends]);
 
   // PHASE_CHECK_NEXT_FRIEND
   useEffect(() => {
@@ -244,7 +249,7 @@ const Battle = () => {
         setPhase(PHASE_MINUS_ENEMY_COUNT);
       }
     }
-  }, [phase, endBattlePhase, friendIndexOnAttack, friends]);
+  }, [phase, friendIndexOnAttack, friends]);
 
   useEffect(() => {
     if (phase === PHASE_MINUS_ENEMY_COUNT) {
@@ -285,7 +290,7 @@ const Battle = () => {
       setEnemies(newEnemies);
       setFriends(newFriends);
 
-      if (newFriends.length <= 0) {
+      if (newFriends.currentTotalHp <= 0) {
         setPhase(PHASE_LOST);
       } else {
         setPhase(PHASE_CHECK_NEXT_ENEMY);
@@ -297,8 +302,9 @@ const Battle = () => {
   useEffect(() => {
     if (phase === PHASE_CHECK_NEXT_ENEMY) {
       console.log('phase', phase);
+      endBattlePhase();
     }
-  }, [phase]);
+  }, [phase, endBattlePhase]);
 
   // PHASE_WIN
   useEffect(() => {
@@ -327,7 +333,7 @@ const Battle = () => {
   return (
     <div>
       <div className={classes['morale']}>{morale}</div>
-      {phase !== PHASE_WIN && (
+      {phase !== PHASE_WIN && phase !== PHASE_LOST && (
         <Enemies
           enemies={enemies}
           onJumpFinish={enemyJumpFinishHandler}
@@ -335,7 +341,7 @@ const Battle = () => {
         />
       )}
       {phase === PHASE_WIN && <Result text='CLEAR!' />}
-      {isGameOver && <Result text='GAME OVER!' />}
+      {phase === PHASE_LOST && <Result text='GAME OVER!' />}
       <Friends
         data={friends}
         onJumpFinish={friendJumpFinishHandler}
