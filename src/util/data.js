@@ -3,7 +3,7 @@ export const ENEMIES = [
     id: 1,
     name: 'enemy 1',
     maxHp: 5000,
-    maxCount: 3,
+    maxCount: 1,
     attack: 300,
   },
   // {
@@ -92,15 +92,15 @@ export const FRIENDS = [
   {
     id: 1,
     name: 'friends 1',
-    maxHp: 400,
+    maxHp: 4000,
     attack: 100,
   },
-  {
-    id: 2,
-    name: 'friends 2',
-    maxHp: 300,
-    attack: 100,
-  },
+  // {
+  //   id: 2,
+  //   name: 'friends 2',
+  //   maxHp: 300,
+  //   attack: 100,
+  // },
   // {
   //   id: 3,
   //   name: 'friends 3',

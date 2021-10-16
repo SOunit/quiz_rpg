@@ -8,17 +8,18 @@ import { getRandomTargetIndex } from '../util/util';
 // import { firebase } from '../firebase/initFirebase';
 import { FRIENDS, ENEMIES, QUIZZES } from '../util/data';
 import {
+  PHASE_QUIZ,
   PHASE_FRIEND_ATTACK,
   PHASE_WAIT_FRIEND_JUMP,
   PHASE_DAMAGE_ENEMY,
   PHASE_CHECK_NEXT_FRIEND,
-  PHASE_QUIZ,
-  PHASE_WIN,
   PHASE_ENEMY_ATTACK,
   PHASE_WAIT_ENEMY_JUMP,
   PHASE_DAMAGE_FRIEND,
-  PHASE_LOST,
   PHASE_CHECK_NEXT_ENEMY,
+  PHASE_LOST,
+  PHASE_WIN,
+  PHASE_MINUS_ENEMY_COUNT,
 } from '../util/consts';
 
 const MORAL_UP_NUM = 0.0;
@@ -240,10 +241,20 @@ const Battle = () => {
         setFriendIndexOnAttack(nextIndex);
         setPhase(PHASE_FRIEND_ATTACK);
       } else {
-        setPhase(PHASE_ENEMY_ATTACK);
+        setPhase(PHASE_MINUS_ENEMY_COUNT);
       }
     }
   }, [phase, endBattlePhase, friendIndexOnAttack, friends]);
+
+  useEffect(() => {
+    if (phase === PHASE_MINUS_ENEMY_COUNT) {
+      console.log('phase', phase);
+      const newEnemy = minusEnemyCount(enemies);
+      setEnemies(newEnemy);
+
+      setPhase(PHASE_ENEMY_ATTACK);
+    }
+  }, [phase, enemies]);
 
   // PHASE_ENEMY_ATTACK
   useEffect(() => {
