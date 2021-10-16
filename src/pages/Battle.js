@@ -21,6 +21,7 @@ import {
   PHASE_WIN,
   PHASE_MINUS_ENEMY_COUNT,
   MORAL_UP_NUM,
+  MIN_MORALE,
 } from '../util/consts';
 
 const Battle = () => {
@@ -153,8 +154,8 @@ const Battle = () => {
     setMorale((prevState) => {
       const result = parseFloat((prevState - MORAL_UP_NUM * 2).toFixed(2));
 
-      if (result <= 0.5) {
-        return 0.5;
+      if (result <= MIN_MORALE) {
+        return MIN_MORALE;
       }
 
       return result;
