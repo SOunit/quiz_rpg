@@ -8,12 +8,14 @@ import { getRandomTargetIndex } from '../util/util';
 // import { firebase } from '../firebase/initFirebase';
 import { FRIENDS, ENEMIES, QUIZZES } from '../util/data';
 import {
-  PHASE_BATTLE_START,
-  PHASE_CHECK_NEXT_FRIEND,
+  PHASE_FRIEND_ATTACK,
+  PHASE_WAIT_FRIEND_JUMP,
   PHASE_DAMAGE_ENEMY,
+  PHASE_CHECK_NEXT_FRIEND,
   PHASE_QUIZ,
-  PHASE_WAIT_JUMP,
   PHASE_WIN,
+  PHASE_ENEMY_ATTACK,
+  PHASE_WAIT_ENEMY_JUMP,
 } from '../util/consts';
 
 const MORAL_UP_NUM = 0.0;
@@ -24,6 +26,7 @@ const Battle = () => {
   const [friends, setFriends] = useState([]);
   const [enemies, setEnemies] = useState([]);
   const [friendIndexOnAttack, setFriendIndexOnAttack] = useState(0);
+  const [enemyIndexOnAttack, setEnemyIndexOnAttack] = useState(0);
 
   // phase
   const [phase, setPhase] = useState(PHASE_QUIZ);
@@ -62,7 +65,7 @@ const Battle = () => {
   };
 
   const startBattleHandler = () => {
-    setPhase(PHASE_BATTLE_START);
+    setPhase(PHASE_FRIEND_ATTACK);
   };
 
   const endBattlePhase = useCallback(() => {
@@ -96,92 +99,6 @@ const Battle = () => {
     },
     [morale]
   );
-
-  // initialize data
-  useEffect(() => {
-    const friends = initFriends(FRIENDS);
-    setFriends(friends);
-
-    const enemies = initEnemies(ENEMIES);
-    setEnemies(enemies);
-
-    // firebase insert test
-    // const todoRef = firebase.database().ref('Todo');
-    // const todo = { title: 'test title', complete: false };
-    // todoRef.push(todo);
-  }, [initFriends]);
-
-  // PHASE_BATTLE_START
-  useEffect(() => {
-    if (phase === PHASE_BATTLE_START) {
-      console.log('phase', phase);
-      setIsQuizActive(false);
-      setPhase(PHASE_WAIT_JUMP);
-
-      if (friends[friendIndexOnAttack]) {
-        friends[friendIndexOnAttack].isJump = true;
-      }
-    }
-  }, [phase, friends, friendIndexOnAttack]);
-
-  // PHASE_WAIT_JUMP
-  useEffect(() => {
-    if (phase === PHASE_WAIT_JUMP) {
-      console.log('phase', phase);
-    }
-  }, [phase]);
-
-  // PHASE_DAMAGE_ENEMY
-  useEffect(() => {
-    if (phase === PHASE_DAMAGE_ENEMY) {
-      console.log('phase', phase);
-      const newEnemies = damageEnemy(enemies, friends[friendIndexOnAttack]);
-      setEnemies(newEnemies);
-
-      if (newEnemies.length <= 0) {
-        setPhase(PHASE_WIN);
-      } else {
-        setPhase(PHASE_CHECK_NEXT_FRIEND);
-      }
-    }
-  }, [
-    phase,
-    damageEnemy,
-    endBattlePhase,
-    enemies,
-    friendIndexOnAttack,
-    friends,
-  ]);
-
-  // PHASE_CHECK_NEXT_FRIEND
-  useEffect(() => {
-    if (phase === PHASE_CHECK_NEXT_FRIEND) {
-      console.log('phase', phase);
-      const nextIndex = friendIndexOnAttack + 1;
-      if (friends[nextIndex]) {
-        setFriendIndexOnAttack(nextIndex);
-        setPhase(PHASE_BATTLE_START);
-      } else {
-        endBattlePhase();
-      }
-    }
-  }, [phase, endBattlePhase, friendIndexOnAttack, friends]);
-
-  // PHASE_WIN
-  useEffect(() => {
-    if (phase === PHASE_WIN) {
-      console.log('phase', phase);
-      setIsQuizActive(false);
-    }
-  }, [phase]);
-
-  // PHASE_QUIZ
-  useEffect(() => {
-    if (phase === PHASE_QUIZ) {
-      console.log('phase', phase);
-      setIsQuizActive(true);
-    }
-  }, [phase]);
 
   const takeActionsHandler = () => {
     // process data
@@ -247,6 +164,110 @@ const Battle = () => {
   const friendJumpFinishHandler = () => {
     setPhase(PHASE_DAMAGE_ENEMY);
   };
+
+  // initialize data
+  useEffect(() => {
+    const friends = initFriends(FRIENDS);
+    setFriends(friends);
+
+    const enemies = initEnemies(ENEMIES);
+    setEnemies(enemies);
+
+    // firebase insert test
+    // const todoRef = firebase.database().ref('Todo');
+    // const todo = { title: 'test title', complete: false };
+    // todoRef.push(todo);
+  }, [initFriends]);
+
+  // PHASE_FRIEND_ATTACK
+  useEffect(() => {
+    if (phase === PHASE_FRIEND_ATTACK) {
+      console.log('phase', phase);
+      setIsQuizActive(false);
+      setPhase(PHASE_WAIT_FRIEND_JUMP);
+
+      if (friends[friendIndexOnAttack]) {
+        friends[friendIndexOnAttack].isJump = true;
+      }
+    }
+  }, [phase, friends, friendIndexOnAttack]);
+
+  // PHASE_WAIT_FRIEND_JUMP
+  useEffect(() => {
+    if (phase === PHASE_WAIT_FRIEND_JUMP) {
+      console.log('phase', phase);
+    }
+  }, [phase]);
+
+  // PHASE_DAMAGE_ENEMY
+  useEffect(() => {
+    if (phase === PHASE_DAMAGE_ENEMY) {
+      console.log('phase', phase);
+      const newEnemies = damageEnemy(enemies, friends[friendIndexOnAttack]);
+      setEnemies(newEnemies);
+
+      if (newEnemies.length <= 0) {
+        setPhase(PHASE_WIN);
+      } else {
+        setPhase(PHASE_CHECK_NEXT_FRIEND);
+      }
+    }
+  }, [
+    phase,
+    damageEnemy,
+    endBattlePhase,
+    enemies,
+    friendIndexOnAttack,
+    friends,
+  ]);
+
+  // PHASE_CHECK_NEXT_FRIEND
+  useEffect(() => {
+    if (phase === PHASE_CHECK_NEXT_FRIEND) {
+      console.log('phase', phase);
+      const nextIndex = friendIndexOnAttack + 1;
+      if (friends[nextIndex]) {
+        setFriendIndexOnAttack(nextIndex);
+        setPhase(PHASE_FRIEND_ATTACK);
+      } else {
+        setPhase(PHASE_ENEMY_ATTACK);
+      }
+    }
+  }, [phase, endBattlePhase, friendIndexOnAttack, friends]);
+
+  // PHASE_ENEMY_ATTACK
+  useEffect(() => {
+    if (phase === PHASE_ENEMY_ATTACK) {
+      console.log('phase', phase);
+      setPhase(PHASE_WAIT_ENEMY_JUMP);
+
+      if (enemies[enemyIndexOnAttack]) {
+        enemies[enemyIndexOnAttack].isJump = true;
+      }
+    }
+  }, [phase, enemies, enemyIndexOnAttack]);
+
+  useEffect(() => {
+    if (phase === PHASE_WAIT_ENEMY_JUMP) {
+      console.log('phase', phase);
+    }
+  }, [phase]);
+
+  // PHASE_WIN
+  useEffect(() => {
+    if (phase === PHASE_WIN) {
+      console.log('phase', phase);
+      setIsQuizActive(false);
+    }
+  }, [phase]);
+
+  // PHASE_QUIZ
+  useEffect(() => {
+    if (phase === PHASE_QUIZ) {
+      console.log('phase', phase);
+      setIsQuizActive(true);
+    }
+  }, [phase]);
 
   return (
     <div>

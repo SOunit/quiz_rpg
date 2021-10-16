@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PHASE_QUIZ, PHASE_WAIT_JUMP } from '../../../util/consts';
+import { PHASE_QUIZ, PHASE_WAIT_FRIEND_JUMP } from '../../../util/consts';
 import classes from './Friend.module.css';
 
 const Friend = (props) => {
@@ -8,7 +8,7 @@ const Friend = (props) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (isJump && phase === PHASE_WAIT_JUMP && count === 0) {
+    if (isJump && phase === PHASE_WAIT_FRIEND_JUMP && count === 0) {
       setCount(1);
       setTimeout(() => {
         console.log('friend jump finish');
