@@ -20,12 +20,8 @@ import {
   PHASE_LOST,
   PHASE_WIN,
   PHASE_MINUS_ENEMY_COUNT,
+  MORAL_UP_NUM,
 } from '../util/consts';
-
-// for production
-// const MORAL_UP_NUM = 0.05;
-// for test
-const MORAL_UP_NUM = 0.0;
 
 const Battle = () => {
   // battle data
@@ -268,7 +264,7 @@ const Battle = () => {
         setPhase(PHASE_CHECK_NEXT_ENEMY);
       }
     }
-  }, [phase]);
+  }, [phase, enemies, enemyIndexOnAttack]);
 
   // PHASE_DAMAGE_FRIEND
   useEffect(() => {

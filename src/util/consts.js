@@ -1,3 +1,12 @@
+// settings
+// for production
+export const MORAL_UP_NUM = 0.05;
+export const COUNT_TO_ACTION = 2;
+
+// for test
+// export const MORAL_UP_NUM = 0;
+// export const COUNT_TO_ACTION = 0;
+
 export const PUBLIC_FIREBASE_PROJECT_ID = 'quiz-rpg';
 export const PUBLIC_FIREBASE_API_KEY =
   'AIzaSyDEYkULvzs1Di5urPS9CoVPkdUkNABpdLY';
