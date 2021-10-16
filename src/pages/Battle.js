@@ -13,6 +13,7 @@ import {
   PHASE_DAMAGE_ENEMY,
   PHASE_QUIZ,
   PHASE_WAIT_JUMP,
+  PHASE_WIN,
 } from '../util/consts';
 
 const MORAL_UP_NUM = 0.0;
@@ -28,7 +29,6 @@ const Battle = () => {
   const [phase, setPhase] = useState(PHASE_QUIZ);
 
   // result
-  const [isClear, setIsClear] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isQuizActive, setIsQuizActive] = useState(true);
 
@@ -138,7 +138,11 @@ const Battle = () => {
       const newEnemies = damageEnemy(enemies, friends[friendIndexOnAttack]);
       setEnemies(newEnemies);
 
-      setPhase(PHASE_CHECK_NEXT_FRIEND);
+      if (newEnemies.length <= 0) {
+        setPhase(PHASE_WIN);
+      } else {
+        setPhase(PHASE_CHECK_NEXT_FRIEND);
+      }
     }
   }, [
     phase,
@@ -160,6 +164,13 @@ const Battle = () => {
       } else {
         endBattlePhase();
       }
+    }
+  }, [phase, endBattlePhase, friendIndexOnAttack, friends]);
+
+  // PHASE_WIN
+  useEffect(() => {
+    if (phase === PHASE_WIN) {
+      console.log('phase', phase);
     }
   }, [phase]);
 
@@ -239,8 +250,8 @@ const Battle = () => {
   return (
     <div>
       <div className={classes['morale']}>{morale}</div>
-      {!isGameOver && <Enemies data={enemies} />}
-      {isClear && <Result text='CLEAR!' />}
+      {phase !== PHASE_WIN && <Enemies data={enemies} />}
+      {phase === PHASE_WIN && <Result text='CLEAR!' />}
       {isGameOver && <Result text='GAME OVER!' />}
       <Friends
         data={friends}

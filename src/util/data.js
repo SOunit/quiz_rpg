@@ -2,7 +2,7 @@ export const ENEMIES = [
   {
     id: 1,
     name: 'enemy 1',
-    maxHp: 1000,
+    maxHp: 500,
     maxCount: 3,
     attack: 30,
   },
