@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { getRandomTargetIndex } from '../../../util/util';
+import { COUNT_TO_ACTION } from '../../../util/consts';
 import classes from './Quiz.module.css';
-
-// 2 for production
-// 0 for test
-const COUNT_TO_ACTION = 2;
 
 const Quiz = (props) => {
   const [count, setCount] = useState(0);

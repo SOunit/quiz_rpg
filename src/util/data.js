@@ -2,24 +2,24 @@ export const ENEMIES = [
   {
     id: 1,
     name: 'enemy 1',
-    maxHp: 500,
+    maxHp: 300,
     maxCount: 2,
-    attack: 100,
+    attack: 30,
   },
   {
     id: 2,
     name: 'enemy 2',
-    maxHp: 200,
+    maxHp: 500,
     maxCount: 3,
-    attack: 180,
+    attack: 90,
   },
-  // {
-  //   id: 3,
-  //   name: 'enemy 3',
-  //   maxHp: 300,
-  //   maxCount: 4,
-  //   attack: 90,
-  // },
+  {
+    id: 3,
+    name: 'enemy 3',
+    maxHp: 900,
+    maxCount: 5,
+    attack: 150,
+  },
 ];
 
 export const QUIZZES = [
@@ -93,13 +93,13 @@ export const FRIENDS = [
     id: 1,
     name: 'friends 1',
     maxHp: 300,
-    attack: 10,
+    attack: 30,
   },
   {
     id: 2,
     name: 'friends 2',
-    maxHp: 300,
-    attack: 100,
+    maxHp: 500,
+    attack: 50,
   },
   // {
   //   id: 3,
