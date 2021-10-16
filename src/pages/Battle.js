@@ -171,6 +171,7 @@ const Battle = () => {
   useEffect(() => {
     if (phase === PHASE_WIN) {
       console.log('phase', phase);
+      setIsQuizActive(false);
     }
   }, [phase]);
 
