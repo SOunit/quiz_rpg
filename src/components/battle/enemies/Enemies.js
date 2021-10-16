@@ -3,11 +3,15 @@ import classes from './Enemies.module.css';
 import HpBar from '../hpBar/HpBar';
 
 const Enemies = (props) => {
-  const enemies = props.data.map((enemy, i) => {
+  const enemies = props.enemies.map((enemy, i) => {
     return (
       <div key={`${enemy.id}_${i}`}>
         <div className={classes['count']}>{enemy.currentCount}</div>
-        <Enemy data={enemy} />
+        <Enemy
+          data={enemy}
+          phase={props.phase}
+          onJumpFinish={props.onJumpFinish}
+        />
         <HpBar currentHp={enemy.currentHp} maxHp={enemy.maxHp} showNum />
       </div>
     );

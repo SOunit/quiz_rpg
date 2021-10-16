@@ -16,6 +16,7 @@ import {
   PHASE_WIN,
   PHASE_ENEMY_ATTACK,
   PHASE_WAIT_ENEMY_JUMP,
+  PHASE_DAMAGE_FRIEND,
 } from '../util/consts';
 
 const MORAL_UP_NUM = 0.0;
@@ -165,6 +166,10 @@ const Battle = () => {
     setPhase(PHASE_DAMAGE_ENEMY);
   };
 
+  const enemyJumpFinishHandler = () => {
+    setPhase(PHASE_DAMAGE_FRIEND);
+  };
+
   // initialize data
   useEffect(() => {
     const friends = initFriends(FRIENDS);
@@ -272,7 +277,13 @@ const Battle = () => {
   return (
     <div>
       <div className={classes['morale']}>{morale}</div>
-      {phase !== PHASE_WIN && <Enemies data={enemies} />}
+      {phase !== PHASE_WIN && (
+        <Enemies
+          enemies={enemies}
+          onJumpFinish={enemyJumpFinishHandler}
+          phase={phase}
+        />
+      )}
       {phase === PHASE_WIN && <Result text='CLEAR!' />}
       {isGameOver && <Result text='GAME OVER!' />}
       <Friends
