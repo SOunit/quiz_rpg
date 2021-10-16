@@ -17,6 +17,8 @@ import {
   PHASE_ENEMY_ATTACK,
   PHASE_WAIT_ENEMY_JUMP,
   PHASE_DAMAGE_FRIEND,
+  PHASE_LOST,
+  PHASE_CHECK_NEXT_ENEMY,
 } from '../util/consts';
 
 const MORAL_UP_NUM = 0.0;
@@ -119,23 +121,26 @@ const Battle = () => {
     // setFriends(newFriends);
   };
 
-  const damageFriends = (enemies) => {
-    let newFriends = friends;
+  const damageFriends = useCallback(
+    (enemies) => {
+      let newFriends = friends;
 
-    // each enemies take actions
-    const newEnemies = enemies.map((enemy) => {
-      if (enemy.currentCount > 0) {
+      // each enemies take actions
+      const newEnemies = enemies.map((enemy) => {
+        if (enemy.currentCount > 0) {
+          return enemy;
+        }
+
+        newFriends.currentTotalHp -= enemy.attack;
+
+        enemy.currentCount = enemy.maxCount;
         return enemy;
-      }
+      });
 
-      newFriends.currentTotalHp -= enemy.attack;
-
-      enemy.currentCount = enemy.maxCount;
-      return enemy;
-    });
-
-    return { newEnemies, newFriends };
-  };
+      return { newEnemies, newFriends };
+    },
+    [friends]
+  );
 
   const minusEnemyCount = (enemies) => {
     const newEnemies = enemies.map((enemy) => {
@@ -252,8 +257,34 @@ const Battle = () => {
     }
   }, [phase, enemies, enemyIndexOnAttack]);
 
+  // PHASE_WAIT_ENEMY_JUMP
   useEffect(() => {
     if (phase === PHASE_WAIT_ENEMY_JUMP) {
+      console.log('phase', phase);
+    }
+  }, [phase]);
+
+  // PHASE_DAMAGE_FRIEND
+  useEffect(() => {
+    if (phase === PHASE_DAMAGE_FRIEND) {
+      console.log('phase', phase);
+
+      const { newEnemies, newFriends } = damageFriends(enemies);
+
+      setEnemies(newEnemies);
+      setFriends(newFriends);
+
+      if (newFriends.length <= 0) {
+        setPhase(PHASE_LOST);
+      } else {
+        setPhase(PHASE_CHECK_NEXT_ENEMY);
+      }
+    }
+  }, [phase, damageFriends, enemies]);
+
+  // PHASE_CHECK_NEXT_ENEMY
+  useEffect(() => {
+    if (phase === PHASE_CHECK_NEXT_ENEMY) {
       console.log('phase', phase);
     }
   }, [phase]);
@@ -261,6 +292,14 @@ const Battle = () => {
   // PHASE_WIN
   useEffect(() => {
     if (phase === PHASE_WIN) {
+      console.log('phase', phase);
+      setIsQuizActive(false);
+    }
+  }, [phase]);
+
+  // PHASE_LOST
+  useEffect(() => {
+    if (phase === PHASE_LOST) {
       console.log('phase', phase);
       setIsQuizActive(false);
     }
