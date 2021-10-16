@@ -22,7 +22,7 @@ import {
   PHASE_MINUS_ENEMY_COUNT,
 } from '../util/consts';
 
-const MORAL_UP_NUM = 0.0;
+const MORAL_UP_NUM = 0.05;
 
 const Battle = () => {
   // battle data
@@ -73,6 +73,7 @@ const Battle = () => {
 
   const endBattlePhase = useCallback(() => {
     setFriendIndexOnAttack(0);
+    setEnemyIndexOnAttack(0);
     setPhase(PHASE_QUIZ);
 
     const newFriends = friends.map((friend) => {
@@ -113,46 +114,27 @@ const Battle = () => {
     [morale]
   );
 
-  const takeActionsHandler = () => {
-    // process data
-    // const damagedEnemies = damageEnemy(enemies, friends);
-    // const minusCountedEnemies = minusEnemyCount(damagedEnemies);
-    // const { newEnemies, newFriends } = damageFriends(minusCountedEnemies);
-    // if (newEnemies.length === 0) {
-    //   setIsClear(true);
-    //   setIsQuizActive(false);
-    // } else if (newFriends.currentTotalHp <= 0) {
-    //   setIsGameOver(true);
-    //   setEnemies([]);
-    //   setIsQuizActive(false);
-    // }
-    // update screen
-    // setEnemies(newEnemies);
-    // setFriends(newFriends);
-  };
-
   const damageFriends = useCallback(
-    (enemies) => {
+    (enemy) => {
+      const newEnemies = enemies;
       let newFriends = friends;
 
-      // each enemies take actions
-      const newEnemies = enemies.map((enemy) => {
-        if (enemy.currentCount > 0) {
-          return enemy;
-        }
+      // FIXME
+      if (newEnemies[enemyIndexOnAttack].currentCount > 0) {
+        return { newEnemies, newFriends };
+      }
 
-        newFriends.currentTotalHp -= enemy.attack;
-        if (newFriends.currentTotalHp <= 0) {
-          newFriends.currentTotalHp = 0;
-        }
+      newEnemies[enemyIndexOnAttack].currentCount =
+        newEnemies[enemyIndexOnAttack].maxCount;
 
-        enemy.currentCount = enemy.maxCount;
-        return enemy;
-      });
+      newFriends.currentTotalHp -= newEnemies[enemyIndexOnAttack].attack;
+      if (newFriends.currentTotalHp <= 0) {
+        newFriends.currentTotalHp = 0;
+      }
 
       return { newEnemies, newFriends };
     },
-    [friends]
+    [friends, enemies, enemyIndexOnAttack]
   );
 
   const minusEnemyCount = (enemies) => {
@@ -285,7 +267,11 @@ const Battle = () => {
     if (phase === PHASE_DAMAGE_FRIEND) {
       console.log('phase', phase);
 
-      const { newEnemies, newFriends } = damageFriends(enemies);
+      const { newEnemies, newFriends } = damageFriends(
+        enemies[enemyIndexOnAttack]
+      );
+
+      console.log('newEnemies', newEnemies);
 
       setEnemies(newEnemies);
       setFriends(newFriends);
@@ -296,15 +282,22 @@ const Battle = () => {
         setPhase(PHASE_CHECK_NEXT_ENEMY);
       }
     }
-  }, [phase, damageFriends, enemies]);
+  }, [phase, damageFriends, enemies, enemyIndexOnAttack]);
 
   // PHASE_CHECK_NEXT_ENEMY
   useEffect(() => {
     if (phase === PHASE_CHECK_NEXT_ENEMY) {
       console.log('phase', phase);
-      endBattlePhase();
+
+      const nextIndex = enemyIndexOnAttack + 1;
+      if (enemies[nextIndex]) {
+        setEnemyIndexOnAttack(nextIndex);
+        setPhase(PHASE_ENEMY_ATTACK);
+      } else {
+        endBattlePhase();
+      }
     }
-  }, [phase, endBattlePhase]);
+  }, [phase, endBattlePhase, enemies, enemyIndexOnAttack]);
 
   // PHASE_WIN
   useEffect(() => {
@@ -349,7 +342,7 @@ const Battle = () => {
       />
       <Quiz
         data={QUIZZES}
-        onTakeActions={takeActionsHandler}
+        onTakeActions={() => {}}
         onMoraleUp={moraleUpHandler}
         onMoraleDown={moraleDownHandler}
         isActive={isQuizActive}

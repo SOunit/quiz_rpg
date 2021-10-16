@@ -12,7 +12,7 @@ const Enemies = (props) => {
           phase={props.phase}
           onJumpFinish={props.onJumpFinish}
         />
-        <HpBar currentHp={enemy.currentHp} maxHp={enemy.maxHp} showNum />
+        <HpBar currentHp={enemy.currentHp} maxHp={enemy.maxHp} />
       </div>
     );
   });
