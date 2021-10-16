@@ -93,13 +93,13 @@ export const FRIENDS = [
     id: 1,
     name: 'friends 1',
     maxHp: 300,
-    attack: 10,
+    attack: 30,
   },
   {
     id: 2,
     name: 'friends 2',
-    maxHp: 300,
-    attack: 100,
+    maxHp: 500,
+    attack: 50,
   },
   // {
   //   id: 3,

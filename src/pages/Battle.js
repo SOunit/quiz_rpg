@@ -22,7 +22,10 @@ import {
   PHASE_MINUS_ENEMY_COUNT,
 } from '../util/consts';
 
-const MORAL_UP_NUM = 0.05;
+// for production
+// const MORAL_UP_NUM = 0.05;
+// for test
+const MORAL_UP_NUM = 0.0;
 
 const Battle = () => {
   // battle data
@@ -249,8 +252,9 @@ const Battle = () => {
       console.log('phase', phase);
       setPhase(PHASE_WAIT_ENEMY_JUMP);
 
-      if (enemies[enemyIndexOnAttack]) {
-        enemies[enemyIndexOnAttack].isJump = true;
+      const enemy = enemies[enemyIndexOnAttack];
+      if (enemy && enemy.currentCount <= 0) {
+        enemy.isJump = true;
       }
     }
   }, [phase, enemies, enemyIndexOnAttack]);
@@ -259,6 +263,10 @@ const Battle = () => {
   useEffect(() => {
     if (phase === PHASE_WAIT_ENEMY_JUMP) {
       console.log('phase', phase);
+      if (enemies[enemyIndexOnAttack].currentCount > 0) {
+        console.log('skip to next phase');
+        setPhase(PHASE_CHECK_NEXT_ENEMY);
+      }
     }
   }, [phase]);
 
@@ -270,8 +278,6 @@ const Battle = () => {
       const { newEnemies, newFriends } = damageFriends(
         enemies[enemyIndexOnAttack]
       );
-
-      console.log('newEnemies', newEnemies);
 
       setEnemies(newEnemies);
       setFriends(newFriends);
