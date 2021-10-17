@@ -59,6 +59,7 @@ const Quiz = (props) => {
 
   const counts = [
     <div
+      key='key for morale'
       className={`${classes['quiz__count']} ${classes['quiz__count--morale']}`}
     >
       Morale: {props.morale}
