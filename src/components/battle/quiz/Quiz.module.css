@@ -1,7 +1,9 @@
 .quiz {
   text-align: center;
-  border: 1px solid blue;
+  border: 2px solid #fff;
   padding: 1rem;
+  margin: 1rem;
+  border-radius: 8px;
 }
 
 .quiz--disabled {
@@ -10,14 +12,18 @@
 }
 
 .quiz__text {
-  border: 1px solid blue;
+  border: 2px solid #fff;
+  color: #fff;
   font-size: 2rem;
+  border-radius: 8px;
 }
 
 .quiz__option {
-  border: 1px solid blue;
+  border: 2px solid #fff;
+  color: #fff;
   margin: 0.5rem 0;
   padding: 0.5rem;
+  border-radius: 8px;
 }
 
 .quiz__counts {

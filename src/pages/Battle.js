@@ -327,7 +327,7 @@ const Battle = () => {
   }, [phase]);
 
   return (
-    <div>
+    <div className={classes['battle-page']}>
       <div className={classes['morale']}>{morale}</div>
       {phase !== PHASE_WIN && phase !== PHASE_LOST && (
         <Enemies
