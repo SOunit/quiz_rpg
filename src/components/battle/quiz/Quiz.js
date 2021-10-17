@@ -57,7 +57,13 @@ const Quiz = (props) => {
 
   options = shuffle(options);
 
-  const counts = [];
+  const counts = [
+    <div
+      className={`${classes['quiz__count']} ${classes['quiz__count--morale']}`}
+    >
+      Morale: {props.morale}
+    </div>,
+  ];
 
   for (let i = 0; i < count; i++) {
     counts.push(<div key={i} className={classes['quiz__count']}></div>);

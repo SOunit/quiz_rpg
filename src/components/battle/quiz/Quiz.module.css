@@ -7,8 +7,7 @@
 }
 
 .quiz--disabled {
-  opacity: 0.5;
-  background-color: grey;
+  opacity: 0.8;
 }
 
 .quiz__text {
@@ -28,14 +27,18 @@
 
 .quiz__counts {
   display: flex;
-  min-height: 1rem;
-  /* border: 1px solid blue; */
   margin-bottom: 1rem;
 }
 
 .quiz__count {
-  background-color: red;
-  height: 1rem;
-  width: 30%;
+  background-color: orange;
+  width: 25%;
+  margin: 0 0.3rem;
+}
+
+.quiz__count--morale {
+  background-color: black;
+  color: #fff;
+  width: 40%;
   margin: 0 0.3rem;
 }

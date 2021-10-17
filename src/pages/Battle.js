@@ -328,7 +328,6 @@ const Battle = () => {
 
   return (
     <div className={classes['battle-page']}>
-      <div className={classes['morale']}>{morale}</div>
       {phase !== PHASE_WIN && phase !== PHASE_LOST && (
         <Enemies
           enemies={enemies}
@@ -345,6 +344,7 @@ const Battle = () => {
       />
       <Quiz
         quizzes={QUIZZES}
+        morale={morale}
         onMoraleUp={moraleUpHandler}
         onMoraleDown={moraleDownHandler}
         isActive={isQuizActive}
