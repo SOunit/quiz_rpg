@@ -344,8 +344,7 @@ const Battle = () => {
         phase={phase}
       />
       <Quiz
-        data={QUIZZES}
-        onTakeActions={() => {}}
+        quizzes={QUIZZES}
         onMoraleUp={moraleUpHandler}
         onMoraleDown={moraleDownHandler}
         isActive={isQuizActive}

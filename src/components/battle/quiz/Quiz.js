@@ -31,13 +31,12 @@ const Quiz = (props) => {
       setCount(0);
 
       props.onStartBattle();
-      props.onTakeActions();
     }
   };
 
-  const quizIndex = getRandomTargetIndex(props.data);
+  const quizIndex = getRandomTargetIndex(props.quizzes);
 
-  let options = props.data[quizIndex].options.map((option) => (
+  let options = props.quizzes[quizIndex].options.map((option) => (
     <div
       id={option.id}
       className={classes['quiz__option']}
@@ -71,7 +70,9 @@ const Quiz = (props) => {
       }`}
     >
       <div className={classes['quiz__counts']}>{counts}</div>
-      <div className={classes['quiz__text']}>{props.data[quizIndex].quiz}</div>
+      <div className={classes['quiz__text']}>
+        {props.quizzes[quizIndex].quiz}
+      </div>
       <div className={classes['quiz__options']}>{options}</div>
     </div>
   );
