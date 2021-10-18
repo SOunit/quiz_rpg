@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# Quiz RPG
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Game app to enjoy repeat practice.
 
-## Available Scripts
+## Screen image
+<img width="447" alt="quiz_rpg_image" src="https://user-images.githubusercontent.com/38809138/137772863-ef6adfde-9141-476b-925a-81033df57ac1.png">
 
-In the project directory, you can run:
+## Demo page
+https://quiz-rpg.web.app/
 
-### `yarn start`
+## Skills
+- React.js
+- Firebase to deploy react app
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## functions
+- random quiz
+- battle with animation
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## functions to add
+- animation for damage
+- level up system
+- party management
+- select field
+- boss character battle
 
-### `yarn test`
+## Infrastructure configuration diagram
+<img width="624" alt="portfolio_infra" src="https://user-images.githubusercontent.com/38809138/137650478-7bc07a1c-730b-46d2-b538-a588c6637919.png">
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Insipired by
+- Dragon Quest II
 
-### `yarn build`
+![dragon_quest_2](https://user-images.githubusercontent.com/38809138/137774448-ad1acac8-1653-4b64-88b1-5c30cbfb35ae.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Quiz RPG: The World of Mystic Wiz
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![quiz_rpg_wiz](https://user-images.githubusercontent.com/38809138/137774951-08271602-f1a2-4a15-a1a8-a9db00134150.jpg)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Puzzle & Dragons
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![pazzle_dragons](https://user-images.githubusercontent.com/38809138/137775261-ed0f0c04-969f-43c9-9624-a83c65c7b03a.png)
