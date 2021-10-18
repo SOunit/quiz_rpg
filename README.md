@@ -12,11 +12,11 @@ https://quiz-rpg.web.app/
 - React.js
 - Firebase to deploy react app
 
-## functions
+## Functions
 - random quiz
 - battle with animation
 
-## functions to add
+## Functions to add
 - animation for damage
 - level up system
 - party management
