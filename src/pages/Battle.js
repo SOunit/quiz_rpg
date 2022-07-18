@@ -20,9 +20,9 @@ import {
   PHASE_LOST,
   PHASE_WIN,
   PHASE_MINUS_ENEMY_COUNT,
+  MORAL_UP_NUM,
+  MIN_MORALE,
 } from '../util/consts';
-
-const MORAL_UP_NUM = 0.05;
 
 const Battle = () => {
   // battle data
@@ -154,8 +154,8 @@ const Battle = () => {
     setMorale((prevState) => {
       const result = parseFloat((prevState - MORAL_UP_NUM * 2).toFixed(2));
 
-      if (result <= 0.5) {
-        return 0.5;
+      if (result <= MIN_MORALE) {
+        return MIN_MORALE;
       }
 
       return result;
@@ -249,8 +249,9 @@ const Battle = () => {
       console.log('phase', phase);
       setPhase(PHASE_WAIT_ENEMY_JUMP);
 
-      if (enemies[enemyIndexOnAttack]) {
-        enemies[enemyIndexOnAttack].isJump = true;
+      const enemy = enemies[enemyIndexOnAttack];
+      if (enemy && enemy.currentCount <= 0) {
+        enemy.isJump = true;
       }
     }
   }, [phase, enemies, enemyIndexOnAttack]);
@@ -259,8 +260,12 @@ const Battle = () => {
   useEffect(() => {
     if (phase === PHASE_WAIT_ENEMY_JUMP) {
       console.log('phase', phase);
+      if (enemies[enemyIndexOnAttack].currentCount > 0) {
+        console.log('skip to next phase');
+        setPhase(PHASE_CHECK_NEXT_ENEMY);
+      }
     }
-  }, [phase]);
+  }, [phase, enemies, enemyIndexOnAttack]);
 
   // PHASE_DAMAGE_FRIEND
   useEffect(() => {
@@ -270,8 +275,6 @@ const Battle = () => {
       const { newEnemies, newFriends } = damageFriends(
         enemies[enemyIndexOnAttack]
       );
-
-      console.log('newEnemies', newEnemies);
 
       setEnemies(newEnemies);
       setFriends(newFriends);
@@ -324,8 +327,7 @@ const Battle = () => {
   }, [phase]);
 
   return (
-    <div>
-      <div className={classes['morale']}>{morale}</div>
+    <div className={classes['battle-page']}>
       {phase !== PHASE_WIN && phase !== PHASE_LOST && (
         <Enemies
           enemies={enemies}
@@ -341,8 +343,8 @@ const Battle = () => {
         phase={phase}
       />
       <Quiz
-        data={QUIZZES}
-        onTakeActions={() => {}}
+        quizzes={QUIZZES}
+        morale={morale}
         onMoraleUp={moraleUpHandler}
         onMoraleDown={moraleDownHandler}
         isActive={isQuizActive}

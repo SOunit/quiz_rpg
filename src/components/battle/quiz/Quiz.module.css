@@ -1,35 +1,44 @@
 .quiz {
   text-align: center;
-  border: 1px solid blue;
+  border: 2px solid #fff;
   padding: 1rem;
+  margin: 1rem;
+  border-radius: 8px;
 }
 
 .quiz--disabled {
-  opacity: 0.5;
-  background-color: grey;
+  opacity: 0.8;
 }
 
 .quiz__text {
-  border: 1px solid blue;
+  border: 2px solid #fff;
+  color: #fff;
   font-size: 2rem;
+  border-radius: 8px;
 }
 
 .quiz__option {
-  border: 1px solid blue;
+  border: 2px solid #fff;
+  color: #fff;
   margin: 0.5rem 0;
   padding: 0.5rem;
+  border-radius: 8px;
 }
 
 .quiz__counts {
   display: flex;
-  min-height: 1rem;
-  /* border: 1px solid blue; */
   margin-bottom: 1rem;
 }
 
 .quiz__count {
-  background-color: red;
-  height: 1rem;
-  width: 30%;
+  background-color: orange;
+  width: 25%;
+  margin: 0 0.3rem;
+}
+
+.quiz__count--morale {
+  background-color: black;
+  color: #fff;
+  width: 40%;
   margin: 0 0.3rem;
 }

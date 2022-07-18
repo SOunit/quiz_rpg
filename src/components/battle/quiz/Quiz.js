@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { getRandomTargetIndex } from '../../../util/util';
+import { COUNT_TO_ACTION } from '../../../util/consts';
 import classes from './Quiz.module.css';
-
-// 2 for production
-// 0 for test
-const COUNT_TO_ACTION = 2;
 
 const Quiz = (props) => {
   const [count, setCount] = useState(0);
@@ -34,13 +31,12 @@ const Quiz = (props) => {
       setCount(0);
 
       props.onStartBattle();
-      props.onTakeActions();
     }
   };
 
-  const quizIndex = getRandomTargetIndex(props.data);
+  const quizIndex = getRandomTargetIndex(props.quizzes);
 
-  let options = props.data[quizIndex].options.map((option) => (
+  let options = props.quizzes[quizIndex].options.map((option) => (
     <div
       id={option.id}
       className={classes['quiz__option']}
@@ -61,7 +57,14 @@ const Quiz = (props) => {
 
   options = shuffle(options);
 
-  const counts = [];
+  const counts = [
+    <div
+      key='key for morale'
+      className={`${classes['quiz__count']} ${classes['quiz__count--morale']}`}
+    >
+      Morale: {props.morale}
+    </div>,
+  ];
 
   for (let i = 0; i < count; i++) {
     counts.push(<div key={i} className={classes['quiz__count']}></div>);
@@ -74,7 +77,9 @@ const Quiz = (props) => {
       }`}
     >
       <div className={classes['quiz__counts']}>{counts}</div>
-      <div className={classes['quiz__text']}>{props.data[quizIndex].quiz}</div>
+      <div className={classes['quiz__text']}>
+        {props.quizzes[quizIndex].quiz}
+      </div>
       <div className={classes['quiz__options']}>{options}</div>
     </div>
   );
